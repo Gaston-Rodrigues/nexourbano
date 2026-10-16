@@ -1,0 +1,99 @@
+PERFILADO de data/viajes.csv: 1,000,000 filas x 17 columnas
+
+--- 1. Tipos de dato ---
+ride_id           object
+ts_start          object
+ts_end            object
+duration_s         int64
+rider_id          object
+vehicle_id        object
+station_start     object
+station_end       object
+barrio_start      object
+barrio_end        object
+lat_start        float64
+lon_start        float64
+lat_end          float64
+lon_end          float64
+km               float64
+fare_ars         float64
+clima_codigo       int64
+dtype: object
+
+--- 2. Nulos por columna ---
+ride_id          0
+ts_start         0
+ts_end           0
+duration_s       0
+rider_id         0
+vehicle_id       0
+station_start    0
+station_end      0
+barrio_start     0
+barrio_end       0
+lat_start        0
+lon_start        0
+lat_end          0
+lon_end          0
+km               0
+fare_ars         0
+clima_codigo     0
+dtype: int64
+
+--- 3. Cardinalidad ---
+ride_id          1000000
+ts_start          129560
+ts_end            937644
+duration_s          2702
+rider_id             120
+vehicle_id            80
+station_start         24
+station_end           24
+barrio_start          12
+barrio_end            12
+lat_start             24
+lon_start             24
+lat_end               24
+lon_end               24
+km                  8501
+fare_ars           75079
+clima_codigo           7
+dtype: int64
+
+--- 4. ride_id duplicados: 0 ---
+
+--- 5. Outliers ---
+Duración en segundos:
+count    1000000.000000
+mean         442.203034
+std         1637.200242
+min            8.000000
+25%          149.000000
+50%          243.000000
+75%          393.000000
+max        20000.000000
+Name: duration_s, dtype: float64
+Viajes de menos de 30 segundos: 13,385 (1.34%)
+Viajes de más de 4 horas:       6,799 (0.68%)
+Viajes con distancia <= 0:      56
+Viajes con velocidad media > 60 km/h: 447,298 (44.73%)
+
+--- 6. Drift temporal ---
+Rango de fechas: 2026-03-01 a 2026-05-30
+Viajes por día: mínimo 6, máximo 11,410
+Últimos 3 días (el último suele venir incompleto):
+dia
+2026-05-28    11120
+2026-05-29    11105
+2026-05-30        6
+dtype: int64
+Viajes y duración media por mes:
+          count   mean
+mes                   
+2026-03  343881  442.0
+2026-04  332992  440.5
+2026-05  323127  444.1
+
+=== RESUMEN ===
+Se rechazan en Silver: duración < 30 s (13,385), duración > 4 h (6,799), distancia <= 0 (56)
+Solo se avisa (no se rechaza): velocidad > 60 km/h (447,298)

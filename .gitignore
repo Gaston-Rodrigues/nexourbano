@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+# datos grandes: se regeneran con tools/generar_datos.py --seed 131 (regla del TP: data/ < 20 MB)
+data/viajes.csv
+data/open/
+data/silver/
+data/gold/
+data/_cuarentena/
+lakehouse/
+# Sólo se versionan muestras chicas
+!data/viajes_muestra.csv

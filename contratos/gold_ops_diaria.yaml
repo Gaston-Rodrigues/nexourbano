@@ -1,0 +1,20 @@
+dataset: gold_ops_diaria
+version: 1.0.0
+layer: gold
+owner: squad_131
+description: KPIs operativos diarios para el ops manager.
+grain: un registro por día (hora local Buenos Aires)
+key: [fecha]
+timezone: America/Argentina/Buenos_Aires
+sla_freshness: 24h
+location: hdfs:///nexo/gold/gold_ops_diaria/
+format: parquet
+columns:
+  - {name: fecha,             type: date,    required: true}
+  - {name: viajes,            type: long,    required: true}
+  - {name: minutos,           type: double,  required: true}
+  - {name: km,                type: double,  required: true}
+  - {name: ingresos_ars,      type: double,  required: true, note: "suma de fare_ars (o tarifa plana documentada)"}
+  - {name: pct_clima_adverso, type: double,  required: true}
+quality_rules:
+  - {id: G1, rule: "sum(viajes) = filas de silver_viajes", action: assert}

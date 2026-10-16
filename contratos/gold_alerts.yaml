@@ -1,0 +1,18 @@
+dataset: gold_alerts
+version: 1.0.0
+layer: gold
+owner: squad_131
+description: Alertas operativas por ventana (Structured Streaming).
+grain: un registro por ventana de 2 min (slide 30 s) y tipo de evento
+key: [window_start, window_end, event]
+timezone: UTC
+sla_freshness: 1m
+location: hdfs:///nexo/gold/gold_alerts/
+format: parquet
+columns:
+  - {name: window_start, type: timestamp, required: true}
+  - {name: window_end,   type: timestamp, required: true}
+  - {name: event,        type: string,    required: true, note: "payment_fail | battery_low"}
+  - {name: count,        type: long,      required: true}
+quality_rules:
+  - {id: A1, rule: "watermark 1 minute: eventos con más de 1 min de retraso se descartan", action: drop}

@@ -1,0 +1,31 @@
+dataset: silver_viajes
+version: 1.0.0
+layer: silver
+owner: squad_131
+description: Viajes validados (reglas R1-R5 del Bronze), tipados y enriquecidos con hora local y clima.
+grain: un registro por viaje válido
+key: [ride_id]
+timezone: America/Argentina/Buenos_Aires   # ts_local, fecha y hora
+sla_freshness: 24h
+location: hdfs:///nexo/silver/viajes/  (y s3a://silver/viajes/)
+format: parquet
+partition_by: [fecha]
+columns:
+  - {name: ride_id,       type: string,    required: true,  unique: true}
+  - {name: ts_start,      type: timestamp, required: true}
+  - {name: ts_end,        type: timestamp, required: true}
+  - {name: ts_local,      type: timestamp, required: true, derived: "from_utc_timestamp(ts_start, tz)"}
+  - {name: fecha,         type: date,      required: true, derived: "to_date(ts_local)"}
+  - {name: hora,          type: integer,   required: true, derived: "hour(ts_local)"}
+  - {name: duration_s,    type: integer,   required: true}
+  - {name: duracion_min,  type: double,    required: true, derived: "duration_s/60"}
+  - {name: rider_id,      type: string,    required: true}
+  - {name: vehicle_id,    type: string,    required: true}
+  - {name: station_start, type: string,    required: true}
+  - {name: km,            type: double,    required: true}
+  - {name: fare_ars,      type: double,    required: false}
+  - {name: weather_code,  type: integer,   required: false, derived: "join silver_clima por estación y hora"}
+  - {name: clima_adverso, type: boolean,   required: false, derived: "weather_code >= 51 (WMO: llovizna/lluvia/chubascos)"}
+quality_rules:
+  - {id: S1, rule: "filas Silver + filas cuarentena = filas Bronze", action: assert}
+  - {id: S2, rule: "viajes sin rider en CRM = 0", action: warn}

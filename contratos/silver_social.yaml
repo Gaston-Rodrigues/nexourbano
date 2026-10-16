@@ -1,0 +1,19 @@
+dataset: silver_social_menciones
+version: 1.0.0
+layer: silver
+owner: squad_131
+description: Posts públicos (Bluesky searchPosts o Mastodon hashtag) sobre micromovilidad / marca.
+grain: un registro por post
+key: [post_uri]
+timezone: UTC
+sla_freshness: 1h
+location: s3a://silver/social/
+format: parquet
+columns:
+  - {name: post_uri,   type: string,    required: true, unique: true}
+  - {name: created_at, type: timestamp, required: true}
+  - {name: text,       type: string,    required: true}
+  - {name: plataforma, type: string,    required: true}
+quality_rules:
+  - {id: P1, rule: "post_uri unique", action: reject}
+  - {id: P2, rule: "text not empty", action: reject}

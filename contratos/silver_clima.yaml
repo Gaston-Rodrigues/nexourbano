@@ -1,0 +1,22 @@
+dataset: silver_clima_horario
+version: 1.0.0
+layer: silver
+owner: squad_131
+description: Clima horario por estación desde Open-Meteo (sin API key), 3 estaciones.
+grain: un registro por estación y hora
+key: [station_id, ts_hora]
+timezone: UTC
+sla_freshness: 3h
+source: https://open-meteo.com  (API REST pública; histórico o forecast)
+location: s3a://silver/clima_horario/
+format: parquet
+columns:
+  - {name: station_id,  type: string,    required: true}
+  - {name: ts_hora,     type: timestamp, required: true}
+  - {name: temp_c,      type: double,    required: false}
+  - {name: precip_mm,   type: double,    required: false}
+  - {name: wind_kmh,    type: double,    required: false}
+  - {name: weather_code,type: integer,   required: true}
+quality_rules:
+  - {id: C1, rule: "weather_code in WMO set {0,1,2,3,45,48,51..67,71..77,80..82,85,86,95,96,99}", action: reject}
+  - {id: C2, rule: "temp_c BETWEEN -10 AND 50", action: reject}

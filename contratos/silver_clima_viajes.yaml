@@ -1,0 +1,39 @@
+# Data contract · Silver · viajes cruzados con clima (M3, Databricks)
+dataset: silver_clima_viajes
+version: 1.0.0
+layer: silver
+owner: squad_131
+description: Viajes válidos (reglas R1-R5 del Bronze) que salen de las 3 estaciones con más viajes, cruzados por estación y hora con el clima horario de Open-Meteo.
+grain: un registro por viaje válido de las 3 estaciones con clima
+key: [ride_id]
+timezone: America/Argentina/Buenos_Aires   # ts_local, fecha y hora; ts_start y ts_end están en UTC
+sla_freshness: 24h
+location: workspace.nexourbano.silver_clima_viajes   # tabla Delta en Databricks (esquema nexourbano)
+format: delta
+columns:
+  - {name: ride_id,       type: string,    required: true,  unique: true}
+  - {name: ts_start,      type: timestamp, required: true}
+  - {name: ts_end,        type: timestamp, required: true}
+  - {name: ts_local,      type: timestamp, required: true, derived: "ts_start pasado a hora de Buenos Aires"}
+  - {name: fecha,         type: date,      required: true, derived: "fecha de ts_local"}
+  - {name: hora,          type: integer,   required: true, derived: "hora de ts_local"}
+  - {name: duration_s,    type: integer,   required: true}
+  - {name: duracion_min,  type: double,    required: true, derived: "duration_s / 60"}
+  - {name: rider_id,      type: string,    required: true}
+  - {name: vehicle_id,    type: string,    required: true}
+  - {name: station_start, type: string,    required: true}
+  - {name: km,            type: double,    required: true}
+  - {name: fare_ars,      type: double,    required: false}
+  - {name: temp_c,        type: double,    required: false, derived: "clima de la estación y hora (Open-Meteo)"}
+  - {name: precip_mm,     type: double,    required: false, derived: "clima de la estación y hora (Open-Meteo)"}
+  - {name: weather_code,  type: integer,   required: false, derived: "clima de la estación y hora (Open-Meteo)"}
+  - {name: clima_adverso, type: boolean,   required: false, derived: "weather_code >= 51 (WMO: llovizna, lluvia, chubascos)"}
+quality_rules:
+  - id: S1
+    regla: "filas Silver + filas cuarentena = filas Bronze"
+    accion: assert
+    medido: "979.760 + 20.240 = 1.000.000"
+  - id: S3
+    regla: "todo viaje tiene el clima de su estación y su hora"
+    accion: avisar
+    medido: "0 viajes sin clima de 123.479"

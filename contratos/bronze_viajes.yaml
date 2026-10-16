@@ -1,0 +1,57 @@
+# Data contract · Bronze · viajes (se trata como código: PR + validar_contratos.py)
+dataset: bronze_viajes
+version: 1.1.0
+layer: bronze
+owner: squad_131
+description: Viajes crudos tal como llegan (CSV del generador seed 131 o dataset abierto).
+grain: un registro por viaje finalizado
+key: [ride_id]
+timezone: UTC          
+sla_freshness: 24h
+location: s3a://bronze/viajes/yyyy/mm/dd/   
+format: csv
+columns:
+  - {name: ride_id,       type: string,    required: true,  unique: true}
+  - {name: ts_start,      type: timestamp, required: true}
+  - {name: ts_end,        type: timestamp, required: true}
+  - {name: duration_s,    type: integer,   required: true}
+  - {name: rider_id,      type: string,    required: true}
+  - {name: vehicle_id,    type: string,    required: true}
+  - {name: station_start, type: string,    required: true}
+  - {name: station_end,   type: string,    required: false}
+  - {name: barrio_start,  type: string,    required: false}
+  - {name: barrio_end,    type: string,    required: false}
+  - {name: lat_start,     type: double,    required: false}
+  - {name: lon_start,     type: double,    required: false}
+  - {name: lat_end,       type: double,    required: false}
+  - {name: lon_end,       type: double,    required: false}
+  - {name: km,            type: double,    required: false}
+  - {name: fare_ars,      type: double,    required: false}
+  - {name: clima_codigo,  type: integer,   required: false}
+  
+quality_rules:          
+  - id: R1
+    regla: "duration_s entre 30 y 14400 segundos (4 horas)"
+    accion: rechazar
+    medido: "13.385 viajes < 30 s (1,34 %) y 6.799 viajes > 4 h (0,68 %)"
+  - id: R2
+    regla: "km mayor a 0"
+    accion: rechazar
+    medido: "56 viajes con km <= 0"
+  - id: R3
+    regla: "ts_end mayor que ts_start"
+    accion: rechazar
+    medido: "0 viajes"
+  - id: R4
+    regla: "ride_id único y no nulo"
+    accion: rechazar
+    medido: "0 duplicados"
+  - id: R5
+    regla: "rider_id, vehicle_id y station_start no nulos"
+    accion: rechazar
+    medido: "0 nulos en todas las columnas"
+  - id: R6
+    regla: "velocidad media (km / horas) menor o igual a 60 km/h"
+    accion: avisar          
+    medido: "447.298 viajes (44,73 %) la superan: km y duración no son coherentes entre sí; rechazarlos borraría casi la mitad de los datos"
+on_error: cuarentena        

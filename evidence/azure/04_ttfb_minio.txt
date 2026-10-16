@@ -1,0 +1,1 @@
+TTFB MinIO local, 10 intentos: mediana 4.1 ms, mínimo 2.2 ms, máximo 15.6 ms

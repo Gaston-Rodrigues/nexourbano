@@ -1,0 +1,178 @@
+# NexoUrbano · entorno local.  Un solo comando levanta los 5 motores de base de datos:
+#     docker compose up -d
+# Antes: crear el archivo .env (copiando .env.example) y generar los datos (ver GUIA_PASO_A_PASO.md).
+# Hadoop / Hive / HBase / Spark están más abajo con "profiles": NO se levantan todavía, van en la fase 2.
+name: nexourbano
+
+x-hadoop: &hadoop
+  image: apache/hadoop:3
+  env_file: ./hadoop.env
+  profiles: [hadoop]
+  restart: unless-stopped
+
+services:
+  # ───────────── BASE ─────────────
+  minio:
+    image: docker.io/pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+    container_name: nexo-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?copiá .env.example a .env}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?copiá .env.example a .env}
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [minio_data:/data]
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    container_name: nexo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?copiá .env.example a .env}
+      MYSQL_DATABASE: crm
+    ports: ["3307:3306"]          # 3307 en tu máquina → 3306 dentro del contenedor
+    volumes:
+      - ./data/mysql/crm_riders.sql:/docker-entrypoint-initdb.d/01_crm.sql:ro
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:8
+    container_name: nexo-mongo
+    ports: ["27018:27017"]        # 27018 en tu máquina → 27017 dentro del contenedor
+    volumes: [mongo_data:/data/db]
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ping:1}).ok' | grep -q 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ───────────── NOSQL ─────────────
+  cassandra:
+    image: cassandra:5
+    container_name: nexo-cassandra
+    environment: {MAX_HEAP_SIZE: 1G, HEAP_NEWSIZE: 256M}
+    ports: ["9042:9042"]
+    volumes: [cassandra_data:/var/lib/cassandra, "./data:/data:ro"]
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' >/dev/null 2>&1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: nexo-neo4j
+    environment:
+      NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:?copiá .env.example a .env}
+      NEO4J_server_memory_heap_max__size: 1G
+    ports: ["7474:7474", "7687:7687"]
+    volumes: [neo4j_data:/data]
+    restart: unless-stopped
+
+  # ───────────── HADOOP ─────────────
+  namenode:
+    <<: *hadoop
+    container_name: nexo-namenode
+    hostname: namenode
+    command: ["hdfs", "namenode"]
+    environment: {ENSURE_NAMENODE_DIR: /tmp/hadoop-root/dfs/name}
+    ports: ["9870:9870", "8020:8020"]
+    volumes: [namenode_data:/tmp/hadoop-root/dfs/name, "./data:/data:ro", "./04-hadoop:/work/04-hadoop:ro"]
+    healthcheck:
+      test: ["CMD-SHELL", "hdfs dfsadmin -safemode get | grep -q OFF"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+
+  datanode1:
+    <<: *hadoop
+    container_name: nexo-datanode1
+    hostname: datanode1
+    command: ["hdfs", "datanode"]
+    depends_on: [namenode]
+    volumes: [datanode1_data:/tmp/hadoop-root/dfs/data]
+
+  datanode2:
+    <<: *hadoop
+    container_name: nexo-datanode2
+    hostname: datanode2
+    command: ["hdfs", "datanode"]
+    depends_on: [namenode]
+    volumes: [datanode2_data:/tmp/hadoop-root/dfs/data]
+
+  resourcemanager:
+    <<: *hadoop
+    container_name: nexo-resourcemanager
+    hostname: resourcemanager
+    command: ["yarn", "resourcemanager"]
+    ports: ["8088:8088"]
+    depends_on: [namenode]
+
+  nodemanager:
+    <<: *hadoop
+    container_name: nexo-nodemanager
+    hostname: nodemanager
+    command: ["yarn", "nodemanager"]
+    depends_on: [resourcemanager]
+
+  hive:                  # HiveServer2 con metastore embebido (Derby) apuntando al HDFS de arriba
+    image: apache/hive:4.0.0
+    container_name: nexo-hive
+    profiles: [hadoop]
+    environment:
+      SERVICE_NAME: hiveserver2
+      SERVICE_OPTS: >-
+        -Dfs.defaultFS=hdfs://namenode:8020
+        -Dhive.metastore.warehouse.dir=hdfs://namenode:8020/user/hive/warehouse
+    ports: ["10000:10000", "10002:10002"]
+    depends_on: [namenode]
+    volumes: ["./data:/data:ro", "./04-hadoop:/work/04-hadoop:ro"]
+    restart: unless-stopped
+
+  hbase:                 # standalone con ZooKeeper embebido
+    image: harisekhon/hbase:2.1
+    container_name: nexo-hbase
+    hostname: hbase
+    profiles: [hadoop]
+    ports: ["16010:16010", "2181:2181", "9090:9090"]
+    volumes: [hbase_data:/hbase-data, "./04-hadoop:/work/04-hadoop:ro", "./data:/data:ro"]
+    restart: unless-stopped
+
+  # ───────────── SPARK ─────────────
+  spark:
+    image: apache/spark:4.0.0
+    container_name: nexo-spark
+    profiles: [spark]
+    user: root
+    command: ["tail", "-f", "/dev/null"]
+    ports: ["4040:4040"]
+    environment: {HOME: /tmp, PYTHONUNBUFFERED: "1"}
+    volumes:
+      - ./05-spark:/opt/nexo/05-spark
+      - ./03-databricks:/opt/nexo/03-databricks
+      - ./09-producto:/opt/nexo/09-producto
+      - ./data:/opt/nexo/data
+      - ./evidence:/opt/nexo/evidence
+      - spark_lake:/opt/nexo/lake
+    restart: unless-stopped
+
+volumes:
+  minio_data: {}
+  mysql_data: {}
+  mongo_data: {}
+  cassandra_data: {}
+  neo4j_data: {}
+  namenode_data: {}
+  datanode1_data: {}
+  datanode2_data: {}
+  hbase_data: {}
+  spark_lake: {}

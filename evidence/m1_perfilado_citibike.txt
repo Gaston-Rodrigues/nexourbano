@@ -1,0 +1,82 @@
+PERFILADO de 202609-citibike-tripdata_1.csv (Citi Bike NYC, sep 2026): 1,000,000 filas x 13 columnas
+
+--- 1. Tipos de dato ---
+ride_id                object
+rideable_type          object
+started_at             object
+ended_at               object
+start_station_name     object
+start_station_id       object
+end_station_name       object
+end_station_id         object
+start_lat             float64
+start_lng             float64
+end_lat               float64
+end_lng               float64
+member_casual          object
+dtype: object
+
+--- 2. Nulos por columna ---
+ride_id                  0
+rideable_type            0
+started_at               0
+ended_at                 0
+start_station_name     570
+start_station_id       570
+end_station_name      1908
+end_station_id        2168
+start_lat              570
+start_lng              570
+end_lat               2167
+end_lng               2167
+member_casual            0
+dtype: int64
+
+--- 3. Cardinalidad ---
+ride_id               1000000
+rideable_type               2
+started_at             999304
+ended_at               999290
+start_station_name       2340
+start_station_id         2342
+end_station_name         2152
+end_station_id           2554
+start_lat                2322
+start_lng                2315
+end_lat                  2132
+end_lng                  2131
+member_casual               2
+dtype: int64
+
+--- 4. ride_id duplicados: 0 ---
+
+--- 5. Outliers ---
+Duración en segundos:
+count    1000000.000000
+mean         828.006228
+std         1622.670110
+min           60.108000
+25%          341.795750
+50%          584.541500
+75%         1001.827250
+max        89997.522000
+Name: duration_s, dtype: float64
+Viajes con duración <= 0:     0
+Viajes de menos de 30 segundos: 0 (0.00%)
+Viajes de más de 4 horas:       733 (0.07%)
+
+--- 6. Drift temporal ---
+Rango de fechas: 2026-08-31 a 2026-09-14
+Viajes por día: mínimo 220, máximo 87,940
+dia
+2026-08-31      220
+2026-09-01    52860
+2026-09-02    66633
+2026-09-03    73708
+2026-09-04    73265
+2026-09-05    64542
+2026-09-06    61302
+2026-09-07    65748
+2026-09-08    76208
+2026-09-09    82000
+dtype: int64
