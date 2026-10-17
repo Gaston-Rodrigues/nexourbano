@@ -1,0 +1,25 @@
+﻿
+Palabra   Veces
+-------   -----
+estacion    629
+rider       580
+carga       324
+bateria     324
+rueda       305
+scooter     305
+pinchada    305
+libera      305
+candado     305
+saltando    299
+gps         299
+freno       295
+vehiculo    295
+irregular   295
+mensual     294
+cobro       294
+pase        294
+doble       294
+app         292
+cierra      292
+
+

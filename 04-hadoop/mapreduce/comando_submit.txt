@@ -1,0 +1,1 @@
+yarn jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar wordcount /nexo/bronze/logs/texto_ops.txt /nexo/gold/wordcount

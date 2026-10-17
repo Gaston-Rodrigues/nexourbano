@@ -1,0 +1,25 @@
+﻿
+Palabra   Veces
+-------   -----
+en        1517 
+no        629  
+estacion  629  
+La        616  
+rider     580  
+bateria   324  
+la        324  
+carga     324  
+#bateria  324  
+Rueda     305  
+pinchada  305  
+Candado   305  
+scooter   305  
+#rueda    305  
+#candado  305  
+libera    305  
+#gps      299  
+GPS       299  
+saltando  299  
+irregular 295  
+
+
