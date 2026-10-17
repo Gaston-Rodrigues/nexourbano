@@ -83,9 +83,9 @@ services:
     container_name: nexo-namenode
     hostname: namenode
     command: ["hdfs", "namenode"]
-    environment: {ENSURE_NAMENODE_DIR: /tmp/hadoop-root/dfs/name}
+    environment: {ENSURE_NAMENODE_DIR: /tmp/hadoop-hadoop/dfs/name}
     ports: ["9870:9870", "8020:8020"]
-    volumes: [namenode_data:/tmp/hadoop-root/dfs/name, "./data:/data:ro", "./04-hadoop:/work/04-hadoop:ro"]
+    volumes: [namenode_data:/tmp/hadoop-hadoop/dfs/name, "./data:/datos:ro", "./04-hadoop:/work/04-hadoop:ro"] 
     healthcheck:
       test: ["CMD-SHELL", "hdfs dfsadmin -safemode get | grep -q OFF"]
       interval: 15s
@@ -99,7 +99,7 @@ services:
     hostname: datanode1
     command: ["hdfs", "datanode"]
     depends_on: [namenode]
-    volumes: [datanode1_data:/tmp/hadoop-root/dfs/data]
+    volumes: [datanode1_data:/tmp/hadoop-hadoop/dfs/data]
 
   datanode2:
     <<: *hadoop
@@ -107,7 +107,7 @@ services:
     hostname: datanode2
     command: ["hdfs", "datanode"]
     depends_on: [namenode]
-    volumes: [datanode2_data:/tmp/hadoop-root/dfs/data]
+    volumes: [datanode2_data:/tmp/hadoop-hadoop/dfs/data]
 
   resourcemanager:
     <<: *hadoop

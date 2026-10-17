@@ -1,0 +1,88 @@
+=== HADOOP: versiones === 
+Hadoop 3.3.6
+Source code repository https://github.com/apache/hadoop.git -r 1be78238728da9266a4f88195058f08fd012bf9c
+Compiled by ubuntu on 2023-06-18T08:22Z
+Compiled on platform linux-x86_64
+Compiled with protoc 3.7.1
+From source with checksum 5652179ad55f76cb287d9c633bb53bbd
+This command was run using /opt/hadoop/share/hadoop/common/hadoop-common-3.3.6.jar
+ 
+=== SERVICIOS === 
+NAME                   IMAGE                                                COMMAND                  SERVICE           CREATED          STATUS                    PORTS
+nexo-datanode1         apache/hadoop:3                                      "/usr/local/bin/dumb…"   datanode1         4 minutes ago    Up 3 minutes              
+nexo-datanode2         apache/hadoop:3                                      "/usr/local/bin/dumb…"   datanode2         4 minutes ago    Up 3 minutes              
+nexo-minio             docker.io/pgsty/minio:RELEASE.2026-08-04T00-00-00Z   "/usr/bin/docker-ent…"   minio             42 hours ago     Up 19 minutes             0.0.0.0:9000-9001->9000-9001/tcp, [::]:9000-9001->9000-9001/tcp
+nexo-mongo             mongo:8                                              "docker-entrypoint.s…"   mongo             42 hours ago     Up 19 minutes (healthy)   0.0.0.0:27018->27017/tcp, [::]:27018->27017/tcp
+nexo-mysql             mysql:8.4                                            "docker-entrypoint.s…"   mysql             42 hours ago     Up 19 minutes (healthy)   0.0.0.0:3307->3306/tcp, [::]:3307->3306/tcp
+nexo-namenode          apache/hadoop:3                                      "/usr/local/bin/dumb…"   namenode          4 minutes ago    Up 3 minutes (healthy)    0.0.0.0:8020->8020/tcp, [::]:8020->8020/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp
+nexo-nodemanager       apache/hadoop:3                                      "/usr/local/bin/dumb…"   nodemanager       14 minutes ago   Up 14 minutes             
+nexo-resourcemanager   apache/hadoop:3                                      "/usr/local/bin/dumb…"   resourcemanager   14 minutes ago   Up 14 minutes             0.0.0.0:8088->8088/tcp, [::]:8088->8088/tcp
+ 
+=== DATANODES === 
+Configured Capacity: 2162202353664 (1.97 TB)
+Present Capacity: 2033261535232 (1.85 TB)
+DFS Remaining: 2033261486080 (1.85 TB)
+DFS Used: 49152 (48 KB)
+DFS Used%: 0.00%
+Replicated Blocks:
+	Under replicated blocks: 0
+	Blocks with corrupt replicas: 0
+	Missing blocks: 0
+	Missing blocks (with replication factor 1): 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+Erasure Coded Block Groups: 
+	Low redundancy block groups: 0
+	Block groups with corrupt internal blocks: 0
+	Missing block groups: 0
+	Low redundancy blocks with highest priority to recover: 0
+	Pending deletion blocks: 0
+
+-------------------------------------------------
+Live datanodes (2):
+
+Name: 172.18.0.6:9866 (nexo-datanode2.nexourbano_default)
+Hostname: datanode2
+Decommission Status : Normal
+Configured Capacity: 1081101176832 (1006.85 GB)
+DFS Used: 24576 (24 KB)
+Non DFS Used: 9478053888 (8.83 GB)
+DFS Remaining: 1016630743040 (946.81 GB)
+DFS Used%: 0.00%
+DFS Remaining%: 94.04%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 0
+Last contact: Sat Oct 17 16:02:26 UTC 2026
+Last Block Report: Sat Oct 17 15:58:59 UTC 2026
+Num of Blocks: 0
+
+
+Name: 172.18.0.7:9866 (nexo-datanode1.nexourbano_default)
+Hostname: datanode1
+Decommission Status : Normal
+Configured Capacity: 1081101176832 (1006.85 GB)
+DFS Used: 24576 (24 KB)
+Non DFS Used: 9478053888 (8.83 GB)
+DFS Remaining: 1016630743040 (946.81 GB)
+DFS Used%: 0.00%
+DFS Remaining%: 94.04%
+Configured Cache Capacity: 0 (0 B)
+Cache Used: 0 (0 B)
+Cache Remaining: 0 (0 B)
+Cache Used%: 100.00%
+Cache Remaining%: 0.00%
+Xceivers: 0
+Last contact: Sat Oct 17 16:02:26 UTC 2026
+Last Block Report: Sat Oct 17 15:58:59 UTC 2026
+Num of Blocks: 0
+
+
+ 
+=== hdfs dfs -ls / === 
+ 
+=== raiz de HDFS === 
+drwxr-xr-x   - hadoop supergroup          0 1970-01-01 00:00 /
