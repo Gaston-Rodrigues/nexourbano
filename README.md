@@ -18,18 +18,31 @@ y reiniciar con `wsl --shutdown`.
 
 **1. Datos y secretos**
 ```powershell
-py tools\generar_datos.py --seed 131 --n-viajes 1000000   # si la RAM no da: 250000 y anotarlo en ADR/000
-Copy-Item .env.example .env                               # editar contraseñas
+py tools\generar_datos.py --seed 131 --n-viajes 1000000
+Copy-Item .env.example .env
 py scripts\verificar_entorno.py
 ```
+Después de copiar `.env.example`, editar las contraseñas de `.env`.
 
-**2. Servicios** (primera fase: los 5 motores base con un solo comando)
+**2. Servicios**
 ```powershell
-docker compose up -d                       # MinIO, MySQL, MongoDB, Cassandra, Neo4j
-docker compose ps                          # los 5 en "running"
-# Fase 2 (más adelante):  docker compose --profile hadoop up -d   y   --profile spark
+docker compose up -d
+docker compose ps
 ```
-UIs: MinIO http://localhost:9001 · Neo4j http://localhost:7474 (HDFS 9870, YARN 8088, HBase 16010, Spark 4040 en la fase 2)
+Con ese comando arrancan los motores base: MinIO, MySQL, MongoDB, Cassandra y Neo4j. Hadoop, Hive y HBase se activan con un perfil:
+```powershell
+docker compose --profile hadoop up -d
+```
+Ese perfil agrega NameNode, 2 DataNodes, ResourceManager, NodeManager, Hive y HBase. El perfil `spark` se usa más adelante (Spark batch y streaming).
+
+| Interfaz | Dirección |
+|---|---|
+| MinIO | http://localhost:9001 |
+| Neo4j | http://localhost:7474 |
+| HDFS (NameNode) | http://localhost:9870 |
+| YARN (ResourceManager) | http://localhost:8088 |
+| HBase (Master) | http://localhost:16010 |
+| Spark (perfil `spark`) | http://localhost:4040 |
 
 **3. Capturar evidencia sin ruido de PowerShell** (usar `cmd /c`, evita el `NativeCommandError`):
 ```powershell
@@ -51,3 +64,31 @@ Data lake local con MinIO (compatible con S3). Los viajes crudos están en:
 - **URI:** `s3a://bronze/viajes/2026/10/15/viajes.csv`
 - **Consola web:** http://localhost:9001
 - Evidencia: `evidence/azure/03_minio_bronze_viajes.webp`
+
+## Notas de operación (Hadoop, Hive y HBase)
+
+- **Apagar sin perder datos:** `docker compose --profile hadoop stop`. No usar `down -v`: borra los volúmenes y con ellos los datos de HDFS.
+- **HBase:** `py 04-hadoop\hbase\preparar_vehiculos.py` genera los comandos de carga. La primera vez se ejecutan con:
+```powershell
+  docker exec nexo-hbase hbase shell /work/04-hadoop/hbase/cargar_vehiculos.txt
+```
+- **Hive:** el metastore (Derby) vive dentro del contenedor; los datos reales están en HDFS. Las tablas se crean con:
+```powershell
+  docker exec nexo-hive beeline -u jdbc:hive2://localhost:10000 -f /work/04-hadoop/hive/hive_nexo.sql
+```
+- **Si Hive entra en bucle de reinicios después de un `stop`** (queda un archivo de control viejo dentro del contenedor):
+```powershell
+  docker rm -f nexo-hive
+  docker exec nexo-namenode hdfs dfs -rm -r -f /user/hive/warehouse/nexo.db
+  docker compose --profile hadoop up -d hive
+```
+  y volver a ejecutar `hive_nexo.sql`.
+
+## Alcance y límites conocidos
+
+- **Squad de un integrante** (Gastón Rodrigues). Los datos son sintéticos (seed 131, ver `data/MANIFIESTO.txt`).
+- **Data lake con MinIO en lugar de Azure** (ver `ADR/001-datalake.md`). Azure no se midió.
+- **HDFS y Hive trabajan con la muestra** `viajes_muestra.csv` (2000 viajes), que el manifiesto indica para HDFS. El millón de viajes se procesa en Databricks y en Spark.
+- **Los 2 DataNodes corren en la misma PC**: la caída de un nodo es simulada. HBase corre en un solo servidor (standalone) y el metastore de Hive es Derby embebido. En producción serían servidores distintos.
+- **Valores atípicos conocidos:** 10 viajes de la muestra duran exactamente 20.000 s (ver `evidence/m1_perfilado_viajes.txt`).
+- **Memoria:** hasta M6 Docker Desktop corrió con el valor por defecto (unos 7,7 GB).
