@@ -1,0 +1,52 @@
+=== ANTES: datos de cada tabla en HDFS ===
+--- bronze_viajes (externa): archivos en su carpeta
+Found 1 items
+-rw-r--r--   2 hadoop supergroup     334303 2026-10-17 23:18 /nexo/hive/bronze_viajes/viajes_muestra.csv
+--- silver_viajes (interna): directorios, archivos y bytes
+         181          180             382921 /user/hive/warehouse/nexo.db/silver_viajes
+
+=== DROP de la tabla externa bronze_viajes y de la interna silver_viajes ===
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+INFO  : Compiling command(queryId=hive_20261017234636_741794c1-fa80-4199-81e1-b8d1dcea29e1): DROP TABLE nexo.bronze_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261017234636_741794c1-fa80-4199-81e1-b8d1dcea29e1); Time taken: 0.007 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261017234636_741794c1-fa80-4199-81e1-b8d1dcea29e1): DROP TABLE nexo.bronze_viajes
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261017234636_741794c1-fa80-4199-81e1-b8d1dcea29e1); Time taken: 0.091 seconds
+No rows affected (0.123 seconds)
+INFO  : Compiling command(queryId=hive_20261017234636_8e9d4dca-6730-4a03-9766-28a53042b374): DROP TABLE nexo.silver_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261017234636_8e9d4dca-6730-4a03-9766-28a53042b374); Time taken: 0.004 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261017234636_8e9d4dca-6730-4a03-9766-28a53042b374): DROP TABLE nexo.silver_viajes
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261017234636_8e9d4dca-6730-4a03-9766-28a53042b374); Time taken: 0.139 seconds
+No rows affected (0.148 seconds)
+Beeline version 4.0.0 by Apache Hive
+[WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000
+
+=== DESPUES: datos de cada tabla en HDFS ===
+--- bronze_viajes (externa): el CSV tiene que seguir ahi
+Found 1 items
+-rw-r--r--   2 hadoop supergroup     334303 2026-10-17 23:18 /nexo/hive/bronze_viajes/viajes_muestra.csv
+--- silver_viajes (interna): tiene que haber desaparecido
+count: `/user/hive/warehouse/nexo.db/silver_viajes': No such file or directory
+=== FIN ===

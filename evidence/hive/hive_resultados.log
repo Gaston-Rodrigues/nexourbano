@@ -1,0 +1,605 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+0: jdbc:hive2://localhost:10000> -- hive_nexo.sql — M6: Hive sobre HDFS (NexoUrbano)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 1. Base de datos
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> CREATE DATABASE IF NOT EXISTS nexo;
+INFO  : Compiling command(queryId=hive_20261018212153_9149aaae-297e-4029-8d02-4ccebcdebb6f): CREATE DATABASE IF NOT EXISTS nexo
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_9149aaae-297e-4029-8d02-4ccebcdebb6f); Time taken: 0.004 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261018212153_9149aaae-297e-4029-8d02-4ccebcdebb6f): CREATE DATABASE IF NOT EXISTS nexo
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261018212153_9149aaae-297e-4029-8d02-4ccebcdebb6f); Time taken: 0.019 seconds
+No rows affected (0.053 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> USE nexo;
+INFO  : Compiling command(queryId=hive_20261018212153_6ea1b807-a65a-4aa8-9629-c51fd3401580): USE nexo
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_6ea1b807-a65a-4aa8-9629-c51fd3401580); Time taken: 0.001 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261018212153_6ea1b807-a65a-4aa8-9629-c51fd3401580): USE nexo
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261018212153_6ea1b807-a65a-4aa8-9629-c51fd3401580); Time taken: 0.002 seconds
+No rows affected (0.008 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 2. Tabla EXTERNA: lee el CSV que esta en HDFS, no copia ni mueve los datos
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> CREATE EXTERNAL TABLE IF NOT EXISTS bronze_viajes (
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   barrio_start STRING, barrio_end STRING,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   km DOUBLE, fare_ars DOUBLE, clima_codigo INT
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> )
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> STORED AS TEXTFILE
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> LOCATION 'hdfs://namenode:8020/nexo/hive/bronze_viajes'
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> TBLPROPERTIES ('skip.header.line.count'='1');
+INFO  : Compiling command(queryId=hive_20261018212153_09e006b6-150f-4ed4-9d36-50067c44ea75): CREATE EXTERNAL TABLE IF NOT EXISTS bronze_viajes (
+ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+barrio_start STRING, barrio_end STRING,
+lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+km DOUBLE, fare_ars DOUBLE, clima_codigo INT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION 'hdfs://namenode:8020/nexo/hive/bronze_viajes'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_09e006b6-150f-4ed4-9d36-50067c44ea75); Time taken: 0.017 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261018212153_09e006b6-150f-4ed4-9d36-50067c44ea75): CREATE EXTERNAL TABLE IF NOT EXISTS bronze_viajes (
+ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+barrio_start STRING, barrio_end STRING,
+lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+km DOUBLE, fare_ars DOUBLE, clima_codigo INT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION 'hdfs://namenode:8020/nexo/hive/bronze_viajes'
+TBLPROPERTIES ('skip.header.line.count'='1')
+INFO  : Completed executing command(queryId=hive_20261018212153_09e006b6-150f-4ed4-9d36-50067c44ea75); Time taken: 0.0 seconds
+No rows affected (0.023 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 3. Tabla INTERNA (managed) particionada por fecha (Hive guarda los datos, un directorio por dia)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SET hive.support.concurrency=true;
+No rows affected (0.003 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SET hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+No rows affected (0.003 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> DROP TABLE IF EXISTS silver_viajes;
+INFO  : Compiling command(queryId=hive_20261018212153_36e30ffd-6e7c-476d-8093-2f57e07b67aa): DROP TABLE IF EXISTS silver_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_36e30ffd-6e7c-476d-8093-2f57e07b67aa); Time taken: 0.012 seconds
+INFO  : Operation DROPTABLE obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212153_36e30ffd-6e7c-476d-8093-2f57e07b67aa): DROP TABLE IF EXISTS silver_viajes
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261018212153_36e30ffd-6e7c-476d-8093-2f57e07b67aa); Time taken: 0.322 seconds
+No rows affected (0.38 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> CREATE TABLE silver_viajes (
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   barrio_start STRING, barrio_end STRING,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   km DOUBLE, fare_ars DOUBLE, clima_codigo INT,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>   hora_local INT
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> )
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> PARTITIONED BY (fecha STRING)
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> STORED AS ORC
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> TBLPROPERTIES ('transactional'='true');
+INFO  : Compiling command(queryId=hive_20261018212153_eccb1234-6773-456a-989f-05a6d81833ad): CREATE TABLE silver_viajes (
+ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+barrio_start STRING, barrio_end STRING,
+lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+km DOUBLE, fare_ars DOUBLE, clima_codigo INT,
+hora_local INT
+)
+PARTITIONED BY (fecha STRING)
+STORED AS ORC
+TBLPROPERTIES ('transactional'='true')
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:null, properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_eccb1234-6773-456a-989f-05a6d81833ad); Time taken: 0.011 seconds
+INFO  : Operation CREATETABLE obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212153_eccb1234-6773-456a-989f-05a6d81833ad): CREATE TABLE silver_viajes (
+ride_id STRING, ts_start STRING, ts_end STRING, duration_s INT,
+rider_id STRING, vehicle_id STRING, station_start STRING, station_end STRING,
+barrio_start STRING, barrio_end STRING,
+lat_start DOUBLE, lon_start DOUBLE, lat_end DOUBLE, lon_end DOUBLE,
+km DOUBLE, fare_ars DOUBLE, clima_codigo INT,
+hora_local INT
+)
+PARTITIONED BY (fecha STRING)
+STORED AS ORC
+TBLPROPERTIES ('transactional'='true')
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261018212153_eccb1234-6773-456a-989f-05a6d81833ad); Time taken: 0.053 seconds
+No rows affected (0.097 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 4. Cargar Silver desde Bronze (la fecha sale de los primeros 10 caracteres de ts_start)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SET hive.exec.dynamic.partition=true;
+No rows affected (0.003 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SET hive.exec.dynamic.partition.mode=nonstrict;
+No rows affected (0.002 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> INSERT OVERWRITE TABLE silver_viajes PARTITION (fecha)
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> SELECT ride_id, ts_start, ts_end, duration_s,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        rider_id, vehicle_id, station_start, station_end,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        barrio_start, barrio_end,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        lat_start, lon_start, lat_end, lon_end,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        km, fare_ars, clima_codigo,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        pmod(CAST(substr(ts_start, 12, 2) AS INT) - 3, 24) AS hora_local,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        substr(ts_start, 1, 10) AS fecha
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> FROM bronze_viajes;
+INFO  : Compiling command(queryId=hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce): INSERT OVERWRITE TABLE silver_viajes PARTITION (fecha)
+SELECT ride_id, ts_start, ts_end, duration_s,
+rider_id, vehicle_id, station_start, station_end,
+barrio_start, barrio_end,
+lat_start, lon_start, lat_end, lon_end,
+km, fare_ars, clima_codigo,
+pmod(CAST(substr(ts_start, 12, 2) AS INT) - 3, 24) AS hora_local,
+substr(ts_start, 1, 10) AS fecha
+FROM bronze_viajes
+INFO  : No Stats for nexo@bronze_viajes, Columns: ride_id, lon_end, km, station_start, barrio_start, ts_end, lat_start, fare_ars, clima_codigo, barrio_end, lat_end, duration_s, lon_start, station_end, rider_id, vehicle_id, ts_start
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:ride_id, type:string, comment:null), FieldSchema(name:ts_start, type:string, comment:null), FieldSchema(name:ts_end, type:string, comment:null), FieldSchema(name:duration_s, type:int, comment:null), FieldSchema(name:rider_id, type:string, comment:null), FieldSchema(name:vehicle_id, type:string, comment:null), FieldSchema(name:station_start, type:string, comment:null), FieldSchema(name:station_end, type:string, comment:null), FieldSchema(name:barrio_start, type:string, comment:null), FieldSchema(name:barrio_end, type:string, comment:null), FieldSchema(name:lat_start, type:double, comment:null), FieldSchema(name:lon_start, type:double, comment:null), FieldSchema(name:lat_end, type:double, comment:null), FieldSchema(name:lon_end, type:double, comment:null), FieldSchema(name:km, type:double, comment:null), FieldSchema(name:fare_ars, type:double, comment:null), FieldSchema(name:clima_codigo, type:int, comment:null), FieldSchema(name:hora_local, type:int, comment:null), FieldSchema(name:fecha, type:string, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce); Time taken: 0.192 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce): INSERT OVERWRITE TABLE silver_viajes PARTITION (fecha)
+SELECT ride_id, ts_start, ts_end, duration_s,
+rider_id, vehicle_id, station_start, station_end,
+barrio_start, barrio_end,
+lat_start, lon_start, lat_end, lon_end,
+km, fare_ars, clima_codigo,
+pmod(CAST(substr(ts_start, 12, 2) AS INT) - 3, 24) AS hora_local,
+substr(ts_start, 1, 10) AS fecha
+FROM bronze_viajes
+INFO  : Query ID = hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce
+INFO  : Tez session hasn't been created yet. Opening session
+INFO  : Dag name: INSERT OVERWRITE TABL......ROM bronze_viajes (Stage-1)
+INFO  : Modified tez.runtime.io.sort.mb to 50
+INFO  : HS2 Host: [9456c340d268], Query ID: [hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce], Dag ID: [dag_1792358514121_0001_1], DAG Session ID: [application_1792358514121_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1792358514121_0001)
+
+[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container       RUNNING      1          0        1        0       0       0  
+Reducer 3        container        INITED      1          0        0        1       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 01/03  [========>>------------------] 33%   ELAPSED TIME: 1.43 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container       RUNNING      1          0        1        0       0       0  
+Reducer 3        container        INITED      1          0        0        1       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 01/03  [========>>------------------] 33%   ELAPSED TIME: 1.93 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container       RUNNING      1          0        1        0       0       0  
+Reducer 3        container        INITED      1          0        0        1       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 01/03  [========>>------------------] 33%   ELAPSED TIME: 2.43 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container       RUNNING      1          0        1        0       0       0  
+Reducer 3        container        INITED      1          0        0        1       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 01/03  [========>>------------------] 33%   ELAPSED TIME: 2.93 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2        container       RUNNING      1          0        1        0       0       0  
+Reducer 3        container        INITED      1          0        0        1       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 01/03  [========>>------------------] 33%   ELAPSED TIME: 3.43 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+INFO  : Starting task [Stage-2:DEPENDENCY_COLLECTION] in serial mode
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Loading data to table nexo.silver_viajes partition (fecha=null) from hdfs://namenode:8020/user/hive/warehouse/nexo.db/silver_viajes
+INFO  : 
+
+INFO  : 	 Time taken to load dynamic partitions: 0.278 seconds
+INFO  : 	 Time taken for adding to write entity : 0.002 seconds
+INFO  : Starting task [Stage-3:STATS] in serial mode
+INFO  : Executing stats task
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2 ...... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 3.94 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+[9A[2K----------------------------------------------------------------------------------------------
+[2K[36;1m        VERTICES      MODE        STATUS  TOTAL  COMPLETED  RUNNING  PENDING  FAILED  KILLED  
+[22;0m[2K----------------------------------------------------------------------------------------------
+[2KMap 1 .......... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 2 ...... container     SUCCEEDED      1          1        0        0       0       0  
+Reducer 3 ...... container     SUCCEEDED      1          1        0        0       0       0  
+[2K----------------------------------------------------------------------------------------------
+[2K[31;1mVERTICES: 03/03  [==========================>>] 100%  ELAPSED TIME: 4.35 s     
+[22;0m[2K----------------------------------------------------------------------------------------------
+INFO  : Partition {fecha=2026-03-01} stats: [numFiles=1, numRows=22, totalSize=4238, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-02} stats: [numFiles=1, numRows=20, totalSize=4134, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-03} stats: [numFiles=1, numRows=15, totalSize=3818, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-04} stats: [numFiles=1, numRows=15, totalSize=3877, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-05} stats: [numFiles=1, numRows=24, totalSize=4347, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-06} stats: [numFiles=1, numRows=30, totalSize=4657, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-07} stats: [numFiles=1, numRows=24, totalSize=4391, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-08} stats: [numFiles=1, numRows=19, totalSize=4107, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-09} stats: [numFiles=1, numRows=25, totalSize=4363, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-10} stats: [numFiles=1, numRows=18, totalSize=4067, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-11} stats: [numFiles=1, numRows=30, totalSize=4630, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-12} stats: [numFiles=1, numRows=20, totalSize=4175, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-13} stats: [numFiles=1, numRows=25, totalSize=4417, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-14} stats: [numFiles=1, numRows=25, totalSize=4399, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-15} stats: [numFiles=1, numRows=16, totalSize=3891, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-16} stats: [numFiles=1, numRows=21, totalSize=4134, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-17} stats: [numFiles=1, numRows=24, totalSize=4366, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-18} stats: [numFiles=1, numRows=21, totalSize=4177, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-19} stats: [numFiles=1, numRows=18, totalSize=4073, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-20} stats: [numFiles=1, numRows=17, totalSize=4000, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-21} stats: [numFiles=1, numRows=26, totalSize=4413, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-22} stats: [numFiles=1, numRows=18, totalSize=4003, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-23} stats: [numFiles=1, numRows=27, totalSize=4520, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-24} stats: [numFiles=1, numRows=22, totalSize=4274, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-25} stats: [numFiles=1, numRows=20, totalSize=4174, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-26} stats: [numFiles=1, numRows=30, totalSize=4620, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-27} stats: [numFiles=1, numRows=24, totalSize=4280, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-28} stats: [numFiles=1, numRows=31, totalSize=4710, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-29} stats: [numFiles=1, numRows=29, totalSize=4647, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-30} stats: [numFiles=1, numRows=21, totalSize=4207, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-03-31} stats: [numFiles=1, numRows=29, totalSize=4661, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-01} stats: [numFiles=1, numRows=24, totalSize=4385, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-02} stats: [numFiles=1, numRows=22, totalSize=4196, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-03} stats: [numFiles=1, numRows=15, totalSize=3842, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-04} stats: [numFiles=1, numRows=22, totalSize=4270, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-05} stats: [numFiles=1, numRows=20, totalSize=4126, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-06} stats: [numFiles=1, numRows=20, totalSize=4179, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-07} stats: [numFiles=1, numRows=20, totalSize=4152, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-08} stats: [numFiles=1, numRows=21, totalSize=4190, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-09} stats: [numFiles=1, numRows=20, totalSize=4190, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-10} stats: [numFiles=1, numRows=22, totalSize=4253, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-11} stats: [numFiles=1, numRows=24, totalSize=4344, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-12} stats: [numFiles=1, numRows=26, totalSize=4358, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-13} stats: [numFiles=1, numRows=22, totalSize=4173, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-14} stats: [numFiles=1, numRows=25, totalSize=4347, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-15} stats: [numFiles=1, numRows=20, totalSize=4133, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-16} stats: [numFiles=1, numRows=18, totalSize=4043, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-17} stats: [numFiles=1, numRows=22, totalSize=4184, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-18} stats: [numFiles=1, numRows=26, totalSize=4403, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-19} stats: [numFiles=1, numRows=26, totalSize=4443, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-20} stats: [numFiles=1, numRows=21, totalSize=4198, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-21} stats: [numFiles=1, numRows=19, totalSize=4163, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-22} stats: [numFiles=1, numRows=23, totalSize=4359, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-23} stats: [numFiles=1, numRows=17, totalSize=3980, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-24} stats: [numFiles=1, numRows=27, totalSize=4524, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-25} stats: [numFiles=1, numRows=26, totalSize=4420, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-26} stats: [numFiles=1, numRows=24, totalSize=4363, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-27} stats: [numFiles=1, numRows=27, totalSize=4504, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-28} stats: [numFiles=1, numRows=28, totalSize=4511, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-29} stats: [numFiles=1, numRows=23, totalSize=4330, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-04-30} stats: [numFiles=1, numRows=19, totalSize=4073, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-01} stats: [numFiles=1, numRows=21, totalSize=4197, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-02} stats: [numFiles=1, numRows=26, totalSize=4511, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-03} stats: [numFiles=1, numRows=26, totalSize=4483, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-04} stats: [numFiles=1, numRows=23, totalSize=4333, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-05} stats: [numFiles=1, numRows=28, totalSize=4599, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-06} stats: [numFiles=1, numRows=25, totalSize=4417, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-07} stats: [numFiles=1, numRows=21, totalSize=4235, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-08} stats: [numFiles=1, numRows=23, totalSize=4283, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-09} stats: [numFiles=1, numRows=21, totalSize=4176, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-10} stats: [numFiles=1, numRows=22, totalSize=4339, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-11} stats: [numFiles=1, numRows=16, totalSize=3888, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-12} stats: [numFiles=1, numRows=19, totalSize=4036, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-13} stats: [numFiles=1, numRows=25, totalSize=4353, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-14} stats: [numFiles=1, numRows=25, totalSize=4385, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-15} stats: [numFiles=1, numRows=23, totalSize=4347, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-16} stats: [numFiles=1, numRows=21, totalSize=4157, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-17} stats: [numFiles=1, numRows=16, totalSize=3876, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-18} stats: [numFiles=1, numRows=19, totalSize=4101, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-19} stats: [numFiles=1, numRows=17, totalSize=3964, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-20} stats: [numFiles=1, numRows=22, totalSize=4308, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-21} stats: [numFiles=1, numRows=17, totalSize=3969, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-22} stats: [numFiles=1, numRows=22, totalSize=4251, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-23} stats: [numFiles=1, numRows=17, totalSize=3938, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-24} stats: [numFiles=1, numRows=22, totalSize=4269, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-25} stats: [numFiles=1, numRows=26, totalSize=4411, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-26} stats: [numFiles=1, numRows=20, totalSize=4102, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-27} stats: [numFiles=1, numRows=26, totalSize=4439, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-28} stats: [numFiles=1, numRows=18, totalSize=4025, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Partition {fecha=2026-05-29} stats: [numFiles=1, numRows=18, totalSize=4033, rawDataSize=0, numFilesErasureCoded=0]
+INFO  : Completed executing command(queryId=hive_20261018212153_2e438b90-979f-40fc-b96d-26bdc4a3d8ce); Time taken: 4.504 seconds
+2,000 rows affected (4.748 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 5. Controles
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT COUNT(*) AS filas_bronze FROM bronze_viajes;
+INFO  : Compiling command(queryId=hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4): SELECT COUNT(*) AS filas_bronze FROM bronze_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:filas_bronze, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4); Time taken: 0.105 seconds
+INFO  : Operation QUERY obtained 0 locks
+INFO  : Executing command(queryId=hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4): SELECT COUNT(*) AS filas_bronze FROM bronze_viajes
+INFO  : Query ID = hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4
+INFO  : Session is already open
+INFO  : Dag name: SELECT COUNT(*) AS fi......ROM bronze_viajes (Stage-1)
+INFO  : HS2 Host: [9456c340d268], Query ID: [hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4], Dag ID: [dag_1792358514121_0001_2], DAG Session ID: [application_1792358514121_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1792358514121_0001)
+
+INFO  : Completed executing command(queryId=hive_20261018212158_a51ad14a-7d3f-4a33-be3f-353a1661f3d4); Time taken: 0.417 seconds
++---------------+
+| filas_bronze  |
++---------------+
+| 2000          |
++---------------+
+1 row selected (0.559 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT COUNT(*) AS filas_silver FROM silver_viajes;
+INFO  : Compiling command(queryId=hive_20261018212159_8b7ec5b1-12c2-4bd6-9746-af553b338518): SELECT COUNT(*) AS filas_silver FROM silver_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:filas_silver, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212159_8b7ec5b1-12c2-4bd6-9746-af553b338518); Time taken: 0.075 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212159_8b7ec5b1-12c2-4bd6-9746-af553b338518): SELECT COUNT(*) AS filas_silver FROM silver_viajes
+INFO  : Completed executing command(queryId=hive_20261018212159_8b7ec5b1-12c2-4bd6-9746-af553b338518); Time taken: 0.0 seconds
++---------------+
+| filas_silver  |
++---------------+
+| 2000          |
++---------------+
+1 row selected (0.106 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT COUNT(DISTINCT fecha) AS dias_particionados FROM silver_viajes;
+INFO  : Compiling command(queryId=hive_20261018212159_77d2ccb8-3129-4511-9280-8d02f95b5bcd): SELECT COUNT(DISTINCT fecha) AS dias_particionados FROM silver_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:dias_particionados, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212159_77d2ccb8-3129-4511-9280-8d02f95b5bcd); Time taken: 0.009 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212159_77d2ccb8-3129-4511-9280-8d02f95b5bcd): SELECT COUNT(DISTINCT fecha) AS dias_particionados FROM silver_viajes
+INFO  : Completed executing command(queryId=hive_20261018212159_77d2ccb8-3129-4511-9280-8d02f95b5bcd); Time taken: 0.0 seconds
++---------------------+
+| dias_particionados  |
++---------------------+
+| 90                  |
++---------------------+
+1 row selected (0.054 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 6. CONSULTA 1: estaciones con mas viajes de llegada (destinos)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT station_end AS estacion, COUNT(*) AS viajes_llegada
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> FROM silver_viajes
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> GROUP BY station_end
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> ORDER BY viajes_llegada DESC
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> LIMIT 5;
+INFO  : Compiling command(queryId=hive_20261018212159_428d4541-2214-4ed3-91f4-8e33be6f79d2): SELECT station_end AS estacion, COUNT(*) AS viajes_llegada
+FROM silver_viajes
+GROUP BY station_end
+ORDER BY viajes_llegada DESC
+LIMIT 5
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:estacion, type:string, comment:null), FieldSchema(name:viajes_llegada, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212159_428d4541-2214-4ed3-91f4-8e33be6f79d2); Time taken: 0.011 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212159_428d4541-2214-4ed3-91f4-8e33be6f79d2): SELECT station_end AS estacion, COUNT(*) AS viajes_llegada
+FROM silver_viajes
+GROUP BY station_end
+ORDER BY viajes_llegada DESC
+LIMIT 5
+INFO  : Completed executing command(queryId=hive_20261018212159_428d4541-2214-4ed3-91f4-8e33be6f79d2); Time taken: 0.0 seconds
++-----------+-----------------+
+| estacion  | viajes_llegada  |
++-----------+-----------------+
+| ST008     | 100             |
+| ST022     | 97              |
+| ST019     | 94              |
+| ST021     | 93              |
+| ST001     | 92              |
++-----------+-----------------+
+5 rows selected (0.051 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 7. CONSULTA 2: viajes de mas de 45 minutos (2700 segundos)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT ride_id, vehicle_id, barrio_start, barrio_end,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        ROUND(duration_s / 60, 1) AS minutos
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> FROM silver_viajes
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> WHERE duration_s > 2700
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> ORDER BY duration_s DESC
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> LIMIT 10;
+INFO  : Compiling command(queryId=hive_20261018212159_e0b06d63-9544-4930-b92f-e69127ed1ad8): SELECT ride_id, vehicle_id, barrio_start, barrio_end,
+ROUND(duration_s / 60, 1) AS minutos
+FROM silver_viajes
+WHERE duration_s > 2700
+ORDER BY duration_s DESC
+LIMIT 10
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:ride_id, type:string, comment:null), FieldSchema(name:vehicle_id, type:string, comment:null), FieldSchema(name:barrio_start, type:string, comment:null), FieldSchema(name:barrio_end, type:string, comment:null), FieldSchema(name:minutos, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212159_e0b06d63-9544-4930-b92f-e69127ed1ad8); Time taken: 0.007 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212159_e0b06d63-9544-4930-b92f-e69127ed1ad8): SELECT ride_id, vehicle_id, barrio_start, barrio_end,
+ROUND(duration_s / 60, 1) AS minutos
+FROM silver_viajes
+WHERE duration_s > 2700
+ORDER BY duration_s DESC
+LIMIT 10
+INFO  : Completed executing command(queryId=hive_20261018212159_e0b06d63-9544-4930-b92f-e69127ed1ad8); Time taken: 0.0 seconds
++-----------+-------------+---------------+--------------+----------+
+|  ride_id  | vehicle_id  | barrio_start  |  barrio_end  | minutos  |
++-----------+-------------+---------------+--------------+----------+
+| T0000624  | V0018       | Retiro        | Recoleta     | 333.3    |
+| T0000032  | V0038       | Almagro       | Retiro       | 333.3    |
+| T0000449  | V0013       | Palermo       | San Telmo    | 333.3    |
+| T0001122  | V0030       | Caballito     | Retiro       | 333.3    |
+| T0000527  | V0061       | Almagro       | Microcentro  | 333.3    |
+| T0001846  | V0070       | Belgrano      | Palermo      | 333.3    |
+| T0001300  | V0013       | Almagro       | Belgrano     | 333.3    |
+| T0000685  | V0034       | Almagro       | Palermo      | 333.3    |
+| T0001693  | V0055       | Almagro       | Chacarita    | 333.3    |
+| T0000105  | V0076       | Almagro       | Almagro      | 333.3    |
++-----------+-------------+---------------+--------------+----------+
+10 rows selected (0.048 seconds)
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> -- 8. CONSULTA 3: cantidad de viajes y duracion promedio por hora local y barrio
+0: jdbc:hive2://localhost:10000> 
+0: jdbc:hive2://localhost:10000> SELECT hora_local, barrio_start AS barrio,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        COUNT(*) AS viajes,
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .>        ROUND(AVG(duration_s) / 60, 1) AS duracion_prom_min
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> FROM silver_viajes
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> GROUP BY hora_local, barrio_start
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> ORDER BY viajes DESC
+. . . . . . . . . . . . . . . .> 
+. . . . . . . . . . . . . . . .> LIMIT 15;
+INFO  : Compiling command(queryId=hive_20261018212159_bbec68a9-526b-4104-a162-e3055bbdd797): SELECT hora_local, barrio_start AS barrio,
+COUNT(*) AS viajes,
+ROUND(AVG(duration_s) / 60, 1) AS duracion_prom_min
+FROM silver_viajes
+GROUP BY hora_local, barrio_start
+ORDER BY viajes DESC
+LIMIT 15
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:hora_local, type:int, comment:null), FieldSchema(name:barrio, type:string, comment:null), FieldSchema(name:viajes, type:bigint, comment:null), FieldSchema(name:duracion_prom_min, type:double, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261018212159_bbec68a9-526b-4104-a162-e3055bbdd797); Time taken: 0.009 seconds
+INFO  : Operation QUERY obtained 1 locks
+INFO  : Executing command(queryId=hive_20261018212159_bbec68a9-526b-4104-a162-e3055bbdd797): SELECT hora_local, barrio_start AS barrio,
+COUNT(*) AS viajes,
+ROUND(AVG(duration_s) / 60, 1) AS duracion_prom_min
+FROM silver_viajes
+GROUP BY hora_local, barrio_start
+ORDER BY viajes DESC
+LIMIT 15
+INFO  : Completed executing command(queryId=hive_20261018212159_bbec68a9-526b-4104-a162-e3055bbdd797); Time taken: 0.0 seconds
++-------------+---------------+---------+--------------------+
+| hora_local  |    barrio     | viajes  | duracion_prom_min  |
++-------------+---------------+---------+--------------------+
+| 9           | Retiro        | 17      | 6.5                |
+| 17          | Caballito     | 15      | 6.3                |
+| 13          | Colegiales    | 15      | 4.4                |
+| 9           | Villa Crespo  | 13      | 3.7                |
+| 7           | Retiro        | 13      | 4.5                |
+| 21          | Caballito     | 13      | 8.3                |
+| 20          | Retiro        | 13      | 7.0                |
+| 0           | Belgrano      | 13      | 6.5                |
+| 18          | Almagro       | 12      | 4.8                |
+| 13          | Palermo       | 12      | 4.9                |
+| 14          | Belgrano      | 12      | 4.5                |
+| 14          | Almagro       | 12      | 3.2                |
+| 0           | Almagro       | 11      | 64.6               |
+| 4           | Almagro       | 11      | 6.6                |
+| 5           | Almagro       | 11      | 66.2               |
++-------------+---------------+---------+--------------------+
+15 rows selected (0.052 seconds)
+0: jdbc:hive2://localhost:10000> [WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000

@@ -1,0 +1,142 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+INFO  : Compiling command(queryId=hive_20261017234354_74ebaf1c-a461-4c0c-a16d-e7c36f5e6799): DESCRIBE FORMATTED nexo.bronze_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:col_name, type:string, comment:from deserializer), FieldSchema(name:data_type, type:string, comment:from deserializer), FieldSchema(name:comment, type:string, comment:from deserializer)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261017234354_74ebaf1c-a461-4c0c-a16d-e7c36f5e6799); Time taken: 0.021 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261017234354_74ebaf1c-a461-4c0c-a16d-e7c36f5e6799): DESCRIBE FORMATTED nexo.bronze_viajes
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261017234354_74ebaf1c-a461-4c0c-a16d-e7c36f5e6799); Time taken: 0.014 seconds
++-------------------------------+----------------------------------------------------+-----------------------+
+|           col_name            |                     data_type                      |        comment        |
++-------------------------------+----------------------------------------------------+-----------------------+
+| ride_id                       | string                                             |                       |
+| ts_start                      | string                                             |                       |
+| ts_end                        | string                                             |                       |
+| duration_s                    | int                                                |                       |
+| rider_id                      | string                                             |                       |
+| vehicle_id                    | string                                             |                       |
+| station_start                 | string                                             |                       |
+| station_end                   | string                                             |                       |
+| barrio_start                  | string                                             |                       |
+| barrio_end                    | string                                             |                       |
+| lat_start                     | double                                             |                       |
+| lon_start                     | double                                             |                       |
+| lat_end                       | double                                             |                       |
+| lon_end                       | double                                             |                       |
+| km                            | double                                             |                       |
+| fare_ars                      | double                                             |                       |
+| clima_codigo                  | int                                                |                       |
+|                               | NULL                                               | NULL                  |
+| # Detailed Table Information  | NULL                                               | NULL                  |
+| Database:                     | nexo                                               | NULL                  |
+| OwnerType:                    | USER                                               | NULL                  |
+| Owner:                        | hive                                               | NULL                  |
+| CreateTime:                   | Sat Oct 17 23:25:45 UTC 2026                       | NULL                  |
+| LastAccessTime:               | UNKNOWN                                            | NULL                  |
+| Retention:                    | 0                                                  | NULL                  |
+| Location:                     | hdfs://namenode:8020/nexo/hive/bronze_viajes       | NULL                  |
+| Table Type:                   | EXTERNAL_TABLE                                     | NULL                  |
+| Table Parameters:             | NULL                                               | NULL                  |
+|                               | EXTERNAL                                           | TRUE                  |
+|                               | bucketing_version                                  | 2                     |
+|                               | numFiles                                           | 1                     |
+|                               | skip.header.line.count                             | 1                     |
+|                               | totalSize                                          | 334303                |
+|                               | transient_lastDdlTime                              | 1792279545            |
+|                               | NULL                                               | NULL                  |
+| # Storage Information         | NULL                                               | NULL                  |
+| SerDe Library:                | org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe | NULL                  |
+| InputFormat:                  | org.apache.hadoop.mapred.TextInputFormat           | NULL                  |
+| OutputFormat:                 | org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat | NULL                  |
+| Compressed:                   | No                                                 | NULL                  |
+| Num Buckets:                  | -1                                                 | NULL                  |
+| Bucket Columns:               | []                                                 | NULL                  |
+| Sort Columns:                 | []                                                 | NULL                  |
+| Storage Desc Params:          | NULL                                               | NULL                  |
+|                               | field.delim                                        | ,                     |
+|                               | serialization.format                               | ,                     |
++-------------------------------+----------------------------------------------------+-----------------------+
+46 rows selected (0.1 seconds)
+INFO  : Compiling command(queryId=hive_20261017234355_5658a841-006c-4408-8e52-67922f3caba7): DESCRIBE FORMATTED nexo.silver_viajes
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:col_name, type:string, comment:from deserializer), FieldSchema(name:data_type, type:string, comment:from deserializer), FieldSchema(name:comment, type:string, comment:from deserializer)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261017234355_5658a841-006c-4408-8e52-67922f3caba7); Time taken: 0.004 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261017234355_5658a841-006c-4408-8e52-67922f3caba7): DESCRIBE FORMATTED nexo.silver_viajes
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=hive_20261017234355_5658a841-006c-4408-8e52-67922f3caba7); Time taken: 0.017 seconds
++-------------------------------+----------------------------------------------------+-----------------------------+
+|           col_name            |                     data_type                      |           comment           |
++-------------------------------+----------------------------------------------------+-----------------------------+
+| ride_id                       | string                                             |                             |
+| ts_start                      | string                                             |                             |
+| ts_end                        | string                                             |                             |
+| duration_s                    | int                                                |                             |
+| rider_id                      | string                                             |                             |
+| vehicle_id                    | string                                             |                             |
+| station_start                 | string                                             |                             |
+| station_end                   | string                                             |                             |
+| barrio_start                  | string                                             |                             |
+| barrio_end                    | string                                             |                             |
+| lat_start                     | double                                             |                             |
+| lon_start                     | double                                             |                             |
+| lat_end                       | double                                             |                             |
+| lon_end                       | double                                             |                             |
+| km                            | double                                             |                             |
+| fare_ars                      | double                                             |                             |
+| clima_codigo                  | int                                                |                             |
+| hora_local                    | int                                                |                             |
+|                               | NULL                                               | NULL                        |
+| # Partition Information       | NULL                                               | NULL                        |
+| # col_name                    | data_type                                          | comment                     |
+| fecha                         | string                                             |                             |
+|                               | NULL                                               | NULL                        |
+| # Detailed Table Information  | NULL                                               | NULL                        |
+| Database:                     | nexo                                               | NULL                        |
+| OwnerType:                    | USER                                               | NULL                        |
+| Owner:                        | hive                                               | NULL                        |
+| CreateTime:                   | Sat Oct 17 23:43:11 UTC 2026                       | NULL                        |
+| LastAccessTime:               | UNKNOWN                                            | NULL                        |
+| Retention:                    | 0                                                  | NULL                        |
+| Location:                     | hdfs://namenode:8020/user/hive/warehouse/nexo.db/silver_viajes | NULL                        |
+| Table Type:                   | MANAGED_TABLE                                      | NULL                        |
+| Table Parameters:             | NULL                                               | NULL                        |
+|                               | COLUMN_STATS_ACCURATE                              | {\"BASIC_STATS\":\"true\"}  |
+|                               | bucketing_version                                  | 2                           |
+|                               | numFiles                                           | 90                          |
+|                               | numPartitions                                      | 90                          |
+|                               | numRows                                            | 2000                        |
+|                               | rawDataSize                                        | 0                           |
+|                               | totalSize                                          | 382831                      |
+|                               | transactional                                      | true                        |
+|                               | transactional_properties                           | default                     |
+|                               | transient_lastDdlTime                              | 1792280591                  |
+|                               | NULL                                               | NULL                        |
+| # Storage Information         | NULL                                               | NULL                        |
+| SerDe Library:                | org.apache.hadoop.hive.ql.io.orc.OrcSerde          | NULL                        |
+| InputFormat:                  | org.apache.hadoop.hive.ql.io.orc.OrcInputFormat    | NULL                        |
+| OutputFormat:                 | org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat   | NULL                        |
+| Compressed:                   | No                                                 | NULL                        |
+| Num Buckets:                  | -1                                                 | NULL                        |
+| Bucket Columns:               | []                                                 | NULL                        |
+| Sort Columns:                 | []                                                 | NULL                        |
++-------------------------------+----------------------------------------------------+-----------------------------+
+52 rows selected (0.033 seconds)
+Beeline version 4.0.0 by Apache Hive
+[WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000

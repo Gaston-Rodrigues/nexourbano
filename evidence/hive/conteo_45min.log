@@ -1,0 +1,41 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/hive/lib/log4j-slf4j-impl-2.18.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Connecting to jdbc:hive2://localhost:10000
+Connected to: Apache Hive (version 4.0.0)
+Driver: Hive JDBC (version 4.0.0)
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+INFO  : Compiling command(queryId=hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c): SELECT COUNT(*) AS viajes_mas_45min FROM nexo.silver_viajes WHERE duration_s > 2700
+INFO  : Semantic Analysis Completed (retrial = false)
+INFO  : Created Hive schema: Schema(fieldSchemas:[FieldSchema(name:viajes_mas_45min, type:bigint, comment:null)], properties:null)
+INFO  : Completed compiling command(queryId=hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c); Time taken: 0.142 seconds
+INFO  : Concurrency mode is disabled, not creating a lock manager
+INFO  : Executing command(queryId=hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c): SELECT COUNT(*) AS viajes_mas_45min FROM nexo.silver_viajes WHERE duration_s > 2700
+INFO  : Query ID = hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Subscribed to counters: [] for queryId: hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c
+INFO  : Tez session hasn't been created yet. Opening session
+INFO  : Dag name: SELECT COUNT(*) AS vi......duration_s > 2700 (Stage-1)
+INFO  : HS2 Host: [0ebab1e099c3], Query ID: [hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c], Dag ID: [dag_1792280302070_0001_1], DAG Session ID: [application_1792280302070_0001]
+INFO  : Status: Running (Executing on YARN cluster with App id application_1792280302070_0001)
+
+INFO  : Completed executing command(queryId=hive_20261017233821_6b79b9c5-54ab-4663-9807-a7ad1ed7f39c); Time taken: 0.955 seconds
++-------------------+
+| viajes_mas_45min  |
++-------------------+
+| 10                |
++-------------------+
+1 row selected (1.135 seconds)
+Beeline version 4.0.0 by Apache Hive
+[WARN] Failed to create directory: /home/hive/.beeline
+No such file or directory
+Closing: 0: jdbc:hive2://localhost:10000

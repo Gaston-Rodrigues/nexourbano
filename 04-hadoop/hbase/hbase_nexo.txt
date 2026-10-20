@@ -1,0 +1,108 @@
+﻿=== 1. CREACION DE LA TABLA Y PRIMEROS PUT (archivo completo de 403 comandos: 04-hadoop/hbase/cargar_vehiculos.txt) ===
+create_namespace 'nexo'
+create 'nexo:vehiculos', 'id', 'telemetry'
+put 'nexo:vehiculos', '0_V0000', 'id:vehicle_id', 'V0000'
+put 'nexo:vehiculos', '0_V0000', 'id:modelo', 'Nexo S1'
+put 'nexo:vehiculos', '0_V0000', 'telemetry:soh_bateria', '89.4'
+put 'nexo:vehiculos', '0_V0000', 'telemetry:ultimo_gps', '-34.64136,-58.363408'
+put 'nexo:vehiculos', '0_V0000', 'telemetry:estado', 'mantenimiento'
+
+=== 2. CONSULTAS ===
+describe 'nexo:vehiculos'
+count 'nexo:vehiculos'
+get 'nexo:vehiculos', '2_V0042'
+scan 'nexo:vehiculos', {FILTER => "SingleColumnValueFilter('telemetry','estado',=,'binary:mantenimiento')"}
+exit 
+
+=== 3. RESULTADOS (evidence/hbase/consultas.log) ===
+2026-10-17 22:50:38,980 WARN  [main] util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Table nexo:vehiculos is ENABLED
+nexo:vehiculos
+COLUMN FAMILIES DESCRIPTION
+{NAME => 'id', VERSIONS => '1', EVICT_BLOCKS_ON_CLOSE => 'false', NEW_VERSION_BEHAVIOR => 'false', KEEP_DELETED_CELLS => 'FALSE', CACHE_DATA_ON_WRITE => 'false', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLOOMFILTER => 'ROW', CACHE_INDEX_ON_WRITE => 'false', IN_MEMORY => 'false', CACHE_BLOOMS_ON_WRITE => 'false', PREFETCH_BLOCKS_ON_OPEN => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '65536'}
+{NAME => 'telemetry', VERSIONS => '1', EVICT_BLOCKS_ON_CLOSE => 'false', NEW_VERSION_BEHAVIOR => 'false', KEEP_DELETED_CELLS => 'FALSE', CACHE_DATA_ON_WRITE => 'false', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', MIN_VERSIONS => '0', REPLICATION_SCOPE => '0', BLOOMFILTER => 'ROW', CACHE_INDEX_ON_WRITE => 'false', IN_MEMORY => 'false', CACHE_BLOOMS_ON_WRITE => 'false', PREFETCH_BLOCKS_ON_OPEN => 'false', COMPRESSION => 'NONE', BLOCKCACHE => 'true', BLOCKSIZE => '65536'}
+2 row(s)
+Took 0.3410 seconds
+80 row(s)
+Took 0.0738 seconds
+COLUMN  CELL
+ id:modelo timestamp=1792277089424, value=Nexo S2
+ id:vehicle_id timestamp=1792277089423, value=V0042
+ telemetry:estado timestamp=1792277089427, value=disponible
+ telemetry:soh_bateria timestamp=1792277089425, value=97.1
+ telemetry:ultimo_gps timestamp=1792277089426, value=-34.64136,-58.363408
+1 row(s)
+Took 0.0162 seconds
+ROW  COLUMN+CELL
+ 0_V0000 column=id:modelo, timestamp=1792277089051, value=Nexo S1
+ 0_V0000 column=id:vehicle_id, timestamp=1792277089040, value=V0000
+ 0_V0000 column=telemetry:estado, timestamp=1792277089058, value=mantenimiento
+ 0_V0000 column=telemetry:soh_bateria, timestamp=1792277089053, value=89.4
+ 0_V0000 column=telemetry:ultimo_gps, timestamp=1792277089056, value=-34.64136,-58.363408
+ 0_V0036 column=id:modelo, timestamp=1792277089385, value=Nexo Bike C
+ 0_V0036 column=id:vehicle_id, timestamp=1792277089384, value=V0036
+ 0_V0036 column=telemetry:estado, timestamp=1792277089389, value=mantenimiento
+ 0_V0036 column=telemetry:soh_bateria, timestamp=1792277089386, value=83.6
+ 0_V0036 column=telemetry:ultimo_gps, timestamp=1792277089387, value=-34.622546,-58.37019
+ 0_V0044 column=id:modelo, timestamp=1792277089435, value=Nexo S2
+ 0_V0044 column=id:vehicle_id, timestamp=1792277089434, value=V0044
+ 0_V0044 column=telemetry:estado, timestamp=1792277089438, value=mantenimiento
+ 0_V0044 column=telemetry:soh_bateria, timestamp=1792277089436, value=91.0
+ 0_V0044 column=telemetry:ultimo_gps, timestamp=1792277089437, value=-34.581593,-58.408352
+ 0_V0076 column=id:modelo, timestamp=1792277089608, value=Nexo Bike C
+ 0_V0076 column=id:vehicle_id, timestamp=1792277089606, value=V0076
+ 0_V0076 column=telemetry:estado, timestamp=1792277089611, value=mantenimiento
+ 0_V0076 column=telemetry:soh_bateria, timestamp=1792277089609, value=73.6
+ 0_V0076 column=telemetry:ultimo_gps, timestamp=1792277089610, value=-34.607356,-58.376201
+ 1_V0005 column=id:modelo, timestamp=1792277089114, value=Nexo S2
+ 1_V0005 column=id:vehicle_id, timestamp=1792277089113, value=V0005
+ 1_V0005 column=telemetry:estado, timestamp=1792277089120, value=mantenimiento
+ 1_V0005 column=telemetry:soh_bateria, timestamp=1792277089116, value=92.2
+ 1_V0005 column=telemetry:ultimo_gps, timestamp=1792277089118, value=-34.566517,-58.382208
+ 1_V0013 column=id:modelo, timestamp=1792277089208, value=Nexo S1
+ 1_V0013 column=id:vehicle_id, timestamp=1792277089205, value=V0013
+ 1_V0013 column=telemetry:estado, timestamp=1792277089216, value=mantenimiento
+ 1_V0013 column=telemetry:soh_bateria, timestamp=1792277089210, value=95.6
+ 1_V0013 column=telemetry:ultimo_gps, timestamp=1792277089213, value=-34.602679,-58.390696
+ 1_V0029 column=id:modelo, timestamp=1792277089342, value=Nexo Bike C
+ 1_V0029 column=id:vehicle_id, timestamp=1792277089341, value=V0029
+ 1_V0029 column=telemetry:estado, timestamp=1792277089345, value=mantenimiento
+ 1_V0029 column=telemetry:soh_bateria, timestamp=1792277089343, value=78.7
+ 1_V0029 column=telemetry:ultimo_gps, timestamp=1792277089344, value=-34.63178,-58.36143
+ 1_V0037 column=id:modelo, timestamp=1792277089392, value=Nexo S2
+ 1_V0037 column=id:vehicle_id, timestamp=1792277089390, value=V0037
+ 1_V0037 column=telemetry:estado, timestamp=1792277089397, value=mantenimiento
+ 1_V0037 column=telemetry:soh_bateria, timestamp=1792277089393, value=66.7
+ 1_V0037 column=telemetry:ultimo_gps, timestamp=1792277089395, value=-34.592277,-58.356356
+ 1_V0053 column=id:modelo, timestamp=1792277089490, value=Nexo S2
+ 1_V0053 column=id:vehicle_id, timestamp=1792277089489, value=V0053
+ 1_V0053 column=telemetry:estado, timestamp=1792277089493, value=mantenimiento
+ 1_V0053 column=telemetry:soh_bateria, timestamp=1792277089491, value=84.0
+ 1_V0053 column=telemetry:ultimo_gps, timestamp=1792277089492, value=-34.591674,-58.400863
+ 1_V0057 column=id:modelo, timestamp=1792277089510, value=Nexo S2
+ 1_V0057 column=id:vehicle_id, timestamp=1792277089509, value=V0057
+ 1_V0057 column=telemetry:estado, timestamp=1792277089513, value=mantenimiento
+ 1_V0057 column=telemetry:soh_bateria, timestamp=1792277089511, value=81.7
+ 1_V0057 column=telemetry:ultimo_gps, timestamp=1792277089512, value=-34.642998,-58.350568
+ 2_V0018 column=id:modelo, timestamp=1792277089260, value=Nexo S1
+ 2_V0018 column=id:vehicle_id, timestamp=1792277089258, value=V0018
+ 2_V0018 column=telemetry:estado, timestamp=1792277089266, value=mantenimiento
+ 2_V0018 column=telemetry:soh_bateria, timestamp=1792277089262, value=69.4
+ 2_V0018 column=telemetry:ultimo_gps, timestamp=1792277089264, value=-34.586905,-58.403828
+ 2_V0062 column=id:modelo, timestamp=1792277089535, value=Nexo S1
+ 2_V0062 column=id:vehicle_id, timestamp=1792277089534, value=V0062
+ 2_V0062 column=telemetry:estado, timestamp=1792277089537, value=mantenimiento
+ 2_V0062 column=telemetry:soh_bateria, timestamp=1792277089536, value=79.1
+ 2_V0062 column=telemetry:ultimo_gps, timestamp=1792277089536, value=-34.583829,-58.345873
+ 3_V0043 column=id:modelo, timestamp=1792277089430, value=Nexo S2
+ 3_V0043 column=id:vehicle_id, timestamp=1792277089429, value=V0043
+ 3_V0043 column=telemetry:estado, timestamp=1792277089433, value=mantenimiento
+ 3_V0043 column=telemetry:soh_bateria, timestamp=1792277089431, value=62.9
+ 3_V0043 column=telemetry:ultimo_gps, timestamp=1792277089432, value=-34.59347,-58.355105
+ 3_V0059 column=id:modelo, timestamp=1792277089519, value=Nexo S1
+ 3_V0059 column=id:vehicle_id, timestamp=1792277089519, value=V0059
+ 3_V0059 column=telemetry:estado, timestamp=1792277089522, value=mantenimiento
+ 3_V0059 column=telemetry:soh_bateria, timestamp=1792277089520, value=96.7
+ 3_V0059 column=telemetry:ultimo_gps, timestamp=1792277089521, value=-34.607356,-58.376201
+14 row(s)
+Took 0.0753 seconds

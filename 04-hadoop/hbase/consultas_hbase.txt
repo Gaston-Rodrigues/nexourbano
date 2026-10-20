@@ -1,0 +1,5 @@
+describe 'nexo:vehiculos'
+count 'nexo:vehiculos'
+get 'nexo:vehiculos', '2_V0042'
+scan 'nexo:vehiculos', {FILTER => "SingleColumnValueFilter('telemetry','estado',=,'binary:mantenimiento')"}
+exit 
