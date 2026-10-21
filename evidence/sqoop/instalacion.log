@@ -1,0 +1,13 @@
+javac 1.8.0_504
+Warning: /opt/sqoop/bin/../../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /opt/sqoop/bin/../../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /opt/sqoop/bin/../../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /opt/sqoop/bin/../../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+2026-10-20 23:05:25 INFO  Sqoop:96 - Running Sqoop version: 1.4.7
+Sqoop 1.4.7
+git commit id 2328971411f57f0cb683dfb79d19d4d19d185dd8
+Compiled by maugli on Thu Dec 21 15:59:58 STD 2017

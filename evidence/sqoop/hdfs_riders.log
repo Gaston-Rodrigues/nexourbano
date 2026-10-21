@@ -1,0 +1,7 @@
+Found 2 items
+-rw-r--r--   2 hadoop supergroup          0 2026-10-20 23:07 /nexo/bronze/riders_sqoop/_SUCCESS
+-rw-r--r--   2 hadoop supergroup       8232 2026-10-20 23:07 /nexo/bronze/riders_sqoop/part-m-00000
+120
+R0000,Rider_0000,rider0000@nexo.example,pro,2025-12-27,Buenos Aires
+R0001,Rider_0001,rider0001@nexo.example,free,2026-02-08,Buenos Aires
+R0002,Rider_0002,rider0002@nexo.example,plus,2025-08-21,Buenos Aires

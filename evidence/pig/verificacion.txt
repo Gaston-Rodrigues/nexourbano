@@ -1,0 +1,4 @@
+﻿Viajes con duration_s < 30:
+31
+Viajes con duration_s > 14400 (4 h):
+10

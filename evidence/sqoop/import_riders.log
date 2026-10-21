@@ -1,0 +1,84 @@
+Warning: /opt/sqoop/bin/../../hbase does not exist! HBase imports will fail.
+Please set $HBASE_HOME to the root of your HBase installation.
+Warning: /opt/sqoop/bin/../../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /opt/sqoop/bin/../../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /opt/sqoop/bin/../../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
+2026-10-20 23:06:55 INFO  Sqoop:96 - Running Sqoop version: 1.4.7
+2026-10-20 23:06:55 WARN  BaseSqoopTool:1120 - Setting your password on the command-line is insecure. Consider using -P instead.
+2026-10-20 23:06:55 INFO  MySQLManager:71 - Preparing to use a MySQL streaming resultset.
+2026-10-20 23:06:55 INFO  CodeGenTool:91 - Beginning code generation
+Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+2026-10-20 23:06:55 INFO  SqlManager:776 - Executing SQL statement: SELECT t.* FROM `riders` AS t LIMIT 1
+2026-10-20 23:06:55 INFO  SqlManager:776 - Executing SQL statement: SELECT t.* FROM `riders` AS t LIMIT 1
+2026-10-20 23:06:55 INFO  CompilationManager:100 - HADOOP_MAPRED_HOME is /opt/hadoop
+Note: /tmp/sqoop-hadoop/compile/43a5fe0a63c69c0170520bbd60149ba1/riders.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+2026-10-20 23:06:56 INFO  CompilationManager:362 - Writing jar file: /tmp/sqoop-hadoop/compile/43a5fe0a63c69c0170520bbd60149ba1/riders.jar
+2026-10-20 23:06:56 INFO  ImportTool:557 - Destination directory /nexo/bronze/riders_sqoop is not present, hence not deleting.
+2026-10-20 23:06:56 WARN  MySQLManager:116 - It looks like you are importing from mysql.
+2026-10-20 23:06:56 WARN  MySQLManager:117 - This transfer can be faster! Use the --direct
+2026-10-20 23:06:56 WARN  MySQLManager:118 - option to exercise a MySQL-specific fast path.
+2026-10-20 23:06:56 INFO  MySQLManager:207 - Setting zero DATETIME behavior to convertToNull (mysql)
+2026-10-20 23:06:56 INFO  ImportJobBase:239 - Beginning import of riders
+2026-10-20 23:06:56 INFO  deprecation:1442 - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+2026-10-20 23:06:56 INFO  deprecation:1442 - mapred.jar is deprecated. Instead, use mapreduce.job.jar
+2026-10-20 23:06:56 INFO  deprecation:1442 - mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+2026-10-20 23:06:56 INFO  DefaultNoHARMFailoverProxyProvider:64 - Connecting to ResourceManager at resourcemanager/172.18.0.12:8032
+2026-10-20 23:06:57 INFO  JobResourceUploader:907 - Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/hadoop/.staging/job_1792530256480_0009
+2026-10-20 23:06:57 INFO  DBInputFormat:195 - Using read commited transaction isolation
+2026-10-20 23:06:57 INFO  JobSubmitter:202 - number of splits:1
+2026-10-20 23:06:57 INFO  JobSubmitter:298 - Submitting tokens for job: job_1792530256480_0009
+2026-10-20 23:06:57 INFO  JobSubmitter:299 - Executing with tokens: []
+2026-10-20 23:06:58 INFO  Configuration:2854 - resource-types.xml not found
+2026-10-20 23:06:58 INFO  ResourceUtils:476 - Unable to find 'resource-types.xml'.
+2026-10-20 23:06:58 INFO  YarnClientImpl:338 - Submitted application application_1792530256480_0009
+2026-10-20 23:06:58 INFO  Job:1682 - The url to track the job: http://resourcemanager:8088/proxy/application_1792530256480_0009/
+2026-10-20 23:06:58 INFO  Job:1727 - Running job: job_1792530256480_0009
+2026-10-20 23:07:03 INFO  Job:1748 - Job job_1792530256480_0009 running in uber mode : false
+2026-10-20 23:07:03 INFO  Job:1755 -  map 0% reduce 0%
+2026-10-20 23:07:07 INFO  Job:1755 -  map 100% reduce 0%
+2026-10-20 23:07:07 INFO  Job:1766 - Job job_1792530256480_0009 completed successfully
+2026-10-20 23:07:07 INFO  Job:1773 - Counters: 33
+	File System Counters
+		FILE: Number of bytes read=0
+		FILE: Number of bytes written=284707
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=87
+		HDFS: Number of bytes written=8232
+		HDFS: Number of read operations=6
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=1
+		Other local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=1699
+		Total time spent by all reduces in occupied slots (ms)=0
+		Total time spent by all map tasks (ms)=1699
+		Total vcore-milliseconds taken by all map tasks=1699
+		Total megabyte-milliseconds taken by all map tasks=1739776
+	Map-Reduce Framework
+		Map input records=120
+		Map output records=120
+		Input split bytes=87
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=31
+		CPU time spent (ms)=620
+		Physical memory (bytes) snapshot=245878784
+		Virtual memory (bytes) snapshot=2705158144
+		Total committed heap usage (bytes)=189792256
+		Peak Map Physical memory (bytes)=245878784
+		Peak Map Virtual memory (bytes)=2705158144
+	File Input Format Counters 
+		Bytes Read=0
+	File Output Format Counters 
+		Bytes Written=8232
+2026-10-20 23:07:07 INFO  ImportJobBase:188 - Transferred 8.0391 KB in 10.6144 seconds (775.5537 bytes/sec)
+2026-10-20 23:07:07 INFO  ImportJobBase:190 - Retrieved 120 records.

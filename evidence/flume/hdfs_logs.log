@@ -1,0 +1,11 @@
+Found 2 items
+-rw-r--r--   2 hadoop supergroup      24666 2026-10-21 14:56 /nexo/bronze/logs/app.1792594554388.log
+-rw-r--r--   2 hadoop supergroup     100995 2026-10-17 17:17 /nexo/bronze/logs/texto_ops.txt
+LINEAS
+200
+ride_start
+81
+ride_end
+94
+payment_fail
+25
