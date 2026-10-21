@@ -4,12 +4,13 @@
 - **Qué se hizo:** Sqoop 1.4.7 importó la tabla con `04-hadoop/sqoop/importar_riders.sh`. Resultado: 120 registros, 8.232 bytes, en 10,6 s (`evidence/sqoop/`). La contraseña se pasa por variable de entorno y no queda en el repo ni en los logs.
 - **Lo que hubo que agregar a mano:** un JDK 8 (el contenedor solo trae el JRE y Sqoop necesita `javac`), el driver JDBC de MySQL y `commons-lang` (Hadoop 3 ya no lo trae). Se usa `-m 1` porque la clave primaria es de texto y Sqoop reparte por rangos numéricos.
 - **Por qué Sqoop aparece en RFPs viejos:** fue el estándar de los años 2010 para mover tablas relacionales a Hadoop y muchos bancos y telcos tienen cientos de jobs escritos con él. Apache lo retiró (Attic) en 2021 y su última versión (1.4.7, de 2017) es de la era de Hadoop 2. Lo que se entrega es la tabla en HDFS, no el logo de Sqoop.
-- **Plan B y diseño 2026:** `spark.read.jdbc` hace lo mismo con menos piezas. Código (escrito, **todavía no ejecutado**; se corre en M8 con Spark):
+- **Plan B y diseño 2026:** `spark.read.jdbc` hace lo mismo con menos piezas. Código (ejecutado en M8 con Spark):
 
 ```python
 import os
 riders = (spark.read.format("jdbc")
-          .option("url", "jdbc:mysql://mysql:3306/crm")
+          .option("url", "jdbc:mysql://mysql:3306/crm?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC")
+          .option("driver", "com.mysql.cj.jdbc.Driver")
           .option("dbtable", "riders")
           .option("user", "root")
           .option("password", os.environ["MYSQL_ROOT_PASSWORD"])
@@ -18,3 +19,5 @@ riders.write.mode("overwrite").csv("hdfs://namenode:8020/nexo/bronze/riders_spar
 ```
 
 - **Límite:** se usó el usuario `root` por simplicidad del sandbox. En producción corresponde un usuario de solo lectura, idealmente sobre una réplica, y para cambios continuos una herramienta de CDC en lugar de cargas completas.
+
+- **Verificación (M8):** `05-spark/batch/verificar_jdbc.py` leyó 120 filas de MySQL y las guardó en `/nexo/bronze/riders_spark`; Sqoop había dejado 120 (`evidence/spark/verificar_jdbc.log`). Hizo falta bajar el driver con `--packages com.mysql:mysql-connector-j:8.3.0` y pasar la opción `driver`: el primer intento falló con `No suitable driver`. La contraseña no aparece en el log (0 coincidencias).

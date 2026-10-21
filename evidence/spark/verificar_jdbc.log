@@ -1,0 +1,95 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+:: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.3.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Ivy Default Cache set to: /root/.ivy2.5.2/cache
+The jars for the packages stored in: /root/.ivy2.5.2/jars
+com.mysql#mysql-connector-j added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-21e18103-5108-4fca-9212-28838bf69a20;1.0
+	confs: [default]
+	found com.mysql#mysql-connector-j;8.3.0 in central
+	found com.google.protobuf#protobuf-java;3.25.1 in central
+:: resolution report :: resolve 104ms :: artifacts dl 3ms
+	:: modules in use:
+	com.google.protobuf#protobuf-java;3.25.1 from central in [default]
+	com.mysql#mysql-connector-j;8.3.0 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   2   |   0   |   0   |   0   ||   2   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-21e18103-5108-4fca-9212-28838bf69a20
+	confs: [default]
+	0 artifacts copied, 2 already retrieved (0kB/4ms)
+26/10/21 16:17:30 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/10/21 16:17:31 INFO SparkContext: Running Spark version 4.0.0
+26/10/21 16:17:31 INFO SparkContext: OS info Linux, 5.15.146.1-microsoft-standard-WSL2, amd64
+26/10/21 16:17:31 INFO SparkContext: Java version 17.0.15
+26/10/21 16:17:31 INFO ResourceUtils: ==============================================================
+26/10/21 16:17:31 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/10/21 16:17:31 INFO ResourceUtils: ==============================================================
+26/10/21 16:17:31 INFO SparkContext: Submitted application: riders_jdbc
+26/10/21 16:17:31 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/10/21 16:17:31 INFO ResourceProfile: Limiting resource is cpu
+26/10/21 16:17:31 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/10/21 16:17:31 INFO SecurityManager: Changing view acls to: root,hadoop
+26/10/21 16:17:31 INFO SecurityManager: Changing modify acls to: root,hadoop
+26/10/21 16:17:31 INFO SecurityManager: Changing view acls groups to: root,hadoop
+26/10/21 16:17:31 INFO SecurityManager: Changing modify acls groups to: root,hadoop
+26/10/21 16:17:31 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root, hadoop groups with view permissions: EMPTY; users with modify permissions: root, hadoop; groups with modify permissions: EMPTY; RPC SSL disabled
+26/10/21 16:17:31 INFO Utils: Successfully started service 'sparkDriver' on port 34357.
+26/10/21 16:17:31 INFO SparkEnv: Registering MapOutputTracker
+26/10/21 16:17:31 INFO SparkEnv: Registering BlockManagerMaster
+26/10/21 16:17:31 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/10/21 16:17:31 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/10/21 16:17:31 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/10/21 16:17:31 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-9354fdaa-8cf3-43f9-90d0-2552b6602caf
+26/10/21 16:17:31 INFO SparkEnv: Registering OutputCommitCoordinator
+26/10/21 16:17:31 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/10/21 16:17:31 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/10/21 16:17:32 INFO SparkContext: Added JAR file:///root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar at spark://7f1bda6d2284:34357/jars/com.mysql_mysql-connector-j-8.3.0.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO SparkContext: Added JAR file:///root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar at spark://7f1bda6d2284:34357/jars/com.google.protobuf_protobuf-java-3.25.1.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO SparkContext: Added file file:///root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar at file:///root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO Utils: Copying /root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.mysql_mysql-connector-j-8.3.0.jar
+26/10/21 16:17:32 INFO SparkContext: Added file file:///root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar at file:///root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO Utils: Copying /root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.google.protobuf_protobuf-java-3.25.1.jar
+26/10/21 16:17:32 INFO SecurityManager: Changing view acls to: root,hadoop
+26/10/21 16:17:32 INFO SecurityManager: Changing modify acls to: root,hadoop
+26/10/21 16:17:32 INFO SecurityManager: Changing view acls groups to: root,hadoop
+26/10/21 16:17:32 INFO SecurityManager: Changing modify acls groups to: root,hadoop
+26/10/21 16:17:32 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root, hadoop groups with view permissions: EMPTY; users with modify permissions: root, hadoop; groups with modify permissions: EMPTY; RPC SSL disabled
+26/10/21 16:17:32 INFO Executor: Starting executor ID driver on host 7f1bda6d2284
+26/10/21 16:17:32 INFO Executor: OS info Linux, 5.15.146.1-microsoft-standard-WSL2, amd64
+26/10/21 16:17:32 INFO Executor: Java version 17.0.15
+26/10/21 16:17:32 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+26/10/21 16:17:32 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@d56ed64 for default.
+26/10/21 16:17:32 INFO Executor: Fetching file:///root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO Utils: /root/.ivy2.5.2/jars/com.google.protobuf_protobuf-java-3.25.1.jar has been previously copied to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.google.protobuf_protobuf-java-3.25.1.jar
+26/10/21 16:17:32 INFO Executor: Fetching file:///root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO Utils: /root/.ivy2.5.2/jars/com.mysql_mysql-connector-j-8.3.0.jar has been previously copied to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.mysql_mysql-connector-j-8.3.0.jar
+26/10/21 16:17:32 INFO Executor: Fetching spark://7f1bda6d2284:34357/jars/com.mysql_mysql-connector-j-8.3.0.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO TransportClientFactory: Successfully created connection to 7f1bda6d2284/172.18.0.14:34357 after 22 ms (0 ms spent in bootstraps)
+26/10/21 16:17:32 INFO Utils: Fetching spark://7f1bda6d2284:34357/jars/com.mysql_mysql-connector-j-8.3.0.jar to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/fetchFileTemp10567181002555231600.tmp
+26/10/21 16:17:32 INFO Utils: /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/fetchFileTemp10567181002555231600.tmp has been previously copied to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.mysql_mysql-connector-j-8.3.0.jar
+26/10/21 16:17:32 INFO Executor: Adding file:/tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.mysql_mysql-connector-j-8.3.0.jar to class loader default
+26/10/21 16:17:32 INFO Executor: Fetching spark://7f1bda6d2284:34357/jars/com.google.protobuf_protobuf-java-3.25.1.jar with timestamp 1792599451486
+26/10/21 16:17:32 INFO Utils: Fetching spark://7f1bda6d2284:34357/jars/com.google.protobuf_protobuf-java-3.25.1.jar to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/fetchFileTemp15337449897181733120.tmp
+26/10/21 16:17:32 INFO Utils: /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/fetchFileTemp15337449897181733120.tmp has been previously copied to /tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.google.protobuf_protobuf-java-3.25.1.jar
+26/10/21 16:17:32 INFO Executor: Adding file:/tmp/spark-cfdfd517-fbdb-4c13-9582-0a243113b363/userFiles-4f38d0a0-7b1e-434b-8c8f-3a3e2d2746d9/com.google.protobuf_protobuf-java-3.25.1.jar to class loader default
+26/10/21 16:17:32 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 44071.
+26/10/21 16:17:32 INFO NettyBlockTransferService: Server created on 7f1bda6d2284:44071
+26/10/21 16:17:32 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/10/21 16:17:32 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 7f1bda6d2284, 44071, None)
+26/10/21 16:17:32 INFO BlockManagerMasterEndpoint: Registering block manager 7f1bda6d2284:44071 with 434.4 MiB RAM, BlockManagerId(driver, 7f1bda6d2284, 44071, None)
+26/10/21 16:17:32 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 7f1bda6d2284, 44071, None)
+26/10/21 16:17:32 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 7f1bda6d2284, 44071, None)
+root
+ |-- rider_id: string (nullable = true)
+ |-- nombre: string (nullable = true)
+ |-- email: string (nullable = true)
+ |-- plan: string (nullable = true)
+ |-- alta: date (nullable = true)
+ |-- ciudad: string (nullable = true)
+
+>> Riders por JDBC (Spark): 120
+>> Riders por Sqoop: 120

@@ -1,0 +1,159 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/10/21 16:04:18 INFO SparkContext: Running Spark version 4.0.0
+26/10/21 16:04:18 INFO SparkContext: OS info Linux, 5.15.146.1-microsoft-standard-WSL2, amd64
+26/10/21 16:04:18 INFO SparkContext: Java version 17.0.15
+26/10/21 16:04:18 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/10/21 16:04:18 INFO ResourceUtils: ==============================================================
+26/10/21 16:04:18 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/10/21 16:04:18 INFO ResourceUtils: ==============================================================
+26/10/21 16:04:18 INFO SparkContext: Submitted application: job_gold
+26/10/21 16:04:18 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/10/21 16:04:18 INFO ResourceProfile: Limiting resource is cpu
+26/10/21 16:04:18 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/10/21 16:04:18 INFO SecurityManager: Changing view acls to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing modify acls to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing view acls groups to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing modify acls groups to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root, hadoop groups with view permissions: EMPTY; users with modify permissions: root, hadoop; groups with modify permissions: EMPTY; RPC SSL disabled
+26/10/21 16:04:18 INFO Utils: Successfully started service 'sparkDriver' on port 39551.
+26/10/21 16:04:18 INFO SparkEnv: Registering MapOutputTracker
+26/10/21 16:04:18 INFO SparkEnv: Registering BlockManagerMaster
+26/10/21 16:04:18 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/10/21 16:04:18 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/10/21 16:04:18 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/10/21 16:04:18 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-ad16dbf4-f5a1-4f0f-b47d-4a8c5550587e
+26/10/21 16:04:18 INFO SparkEnv: Registering OutputCommitCoordinator
+26/10/21 16:04:18 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/10/21 16:04:18 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/10/21 16:04:18 INFO SecurityManager: Changing view acls to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing modify acls to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing view acls groups to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: Changing modify acls groups to: root,hadoop
+26/10/21 16:04:18 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root, hadoop groups with view permissions: EMPTY; users with modify permissions: root, hadoop; groups with modify permissions: EMPTY; RPC SSL disabled
+26/10/21 16:04:19 INFO Executor: Starting executor ID driver on host 7f1bda6d2284
+26/10/21 16:04:19 INFO Executor: OS info Linux, 5.15.146.1-microsoft-standard-WSL2, amd64
+26/10/21 16:04:19 INFO Executor: Java version 17.0.15
+26/10/21 16:04:19 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+26/10/21 16:04:19 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@34c3c895 for default.
+26/10/21 16:04:19 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 36423.
+26/10/21 16:04:19 INFO NettyBlockTransferService: Server created on 7f1bda6d2284:36423
+26/10/21 16:04:19 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/10/21 16:04:19 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 7f1bda6d2284, 36423, None)
+26/10/21 16:04:19 INFO BlockManagerMasterEndpoint: Registering block manager 7f1bda6d2284:36423 with 1048.8 MiB RAM, BlockManagerId(driver, 7f1bda6d2284, 36423, None)
+26/10/21 16:04:19 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 7f1bda6d2284, 36423, None)
+26/10/21 16:04:19 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 7f1bda6d2284, 36423, None)
+>> Viajes en Bronze: 1000000
+>> Rechazados R1 duración : 20184
+>> Rechazados R2 km : 56
+>> Rechazados R3 fin>inicio : 0
+>> Rechazados R4 ride_id único : 0
+>> Rechazados R5 nulos : 0
+>> Aviso R6 (velocidad > 60 km/h): 447298
+>> Viajes válidos (Silver): 979760
+>> Viajes en cuarentena: 20240
+>> Silver + cuarentena = Bronze ? True
+>> Viajes con clima: 123479
+>> Silver guardado en hdfs://namenode:8020/nexo/silver/viajes
+>> Filas leídas de vuelta: 979760
+>> Riders leídos de HDFS: 120
+>> EXPLAIN de la consulta (viajes por plan del 2026-05-26):
+== Parsed Logical Plan ==
+'Sort ['plan ASC NULLS FIRST], true
++- Aggregate [plan#5641], [plan#5641, count(1) AS viajes#5652L]
+   +- Filter (fecha#5618 = cast(2026-05-26 as date))
+      +- Project [rider_id#5611, ride_id#5604, ts_start#5605, ts_end#5606, ts_local#5607, hora#5608, duration_s#5609, duracion_min#5610, vehicle_id#5612, station_start#5613, km#5614, fare_ars#5615, weather_code#5616, clima_adverso#5617, fecha#5618, plan#5641]
+         +- Join LeftOuter, (rider_id#5611 = rider_id#5638)
+            :- Relation [ride_id#5604,ts_start#5605,ts_end#5606,ts_local#5607,hora#5608,duration_s#5609,duracion_min#5610,rider_id#5611,vehicle_id#5612,station_start#5613,km#5614,fare_ars#5615,weather_code#5616,clima_adverso#5617,fecha#5618] parquet
+            +- Project [rider_id#5638, plan#5641]
+               +- Relation [rider_id#5638,nombre#5639,email#5640,plan#5641,alta#5642,ciudad#5643] csv
+
+== Analyzed Logical Plan ==
+plan: string, viajes: bigint
+Sort [plan#5641 ASC NULLS FIRST], true
++- Aggregate [plan#5641], [plan#5641, count(1) AS viajes#5652L]
+   +- Filter (fecha#5618 = cast(2026-05-26 as date))
+      +- Project [rider_id#5611, ride_id#5604, ts_start#5605, ts_end#5606, ts_local#5607, hora#5608, duration_s#5609, duracion_min#5610, vehicle_id#5612, station_start#5613, km#5614, fare_ars#5615, weather_code#5616, clima_adverso#5617, fecha#5618, plan#5641]
+         +- Join LeftOuter, (rider_id#5611 = rider_id#5638)
+            :- Relation [ride_id#5604,ts_start#5605,ts_end#5606,ts_local#5607,hora#5608,duration_s#5609,duracion_min#5610,rider_id#5611,vehicle_id#5612,station_start#5613,km#5614,fare_ars#5615,weather_code#5616,clima_adverso#5617,fecha#5618] parquet
+            +- Project [rider_id#5638, plan#5641]
+               +- Relation [rider_id#5638,nombre#5639,email#5640,plan#5641,alta#5642,ciudad#5643] csv
+
+== Optimized Logical Plan ==
+Sort [plan#5641 ASC NULLS FIRST], true
++- Aggregate [plan#5641], [plan#5641, count(1) AS viajes#5652L]
+   +- Project [plan#5641]
+      +- Join LeftOuter, (rider_id#5611 = rider_id#5638)
+         :- Project [rider_id#5611]
+         :  +- Filter (isnotnull(fecha#5618) AND (fecha#5618 = 2026-05-26))
+         :     +- Relation [ride_id#5604,ts_start#5605,ts_end#5606,ts_local#5607,hora#5608,duration_s#5609,duracion_min#5610,rider_id#5611,vehicle_id#5612,station_start#5613,km#5614,fare_ars#5615,weather_code#5616,clima_adverso#5617,fecha#5618] parquet
+         +- Project [rider_id#5638, plan#5641]
+            +- Filter isnotnull(rider_id#5638)
+               +- Relation [rider_id#5638,nombre#5639,email#5640,plan#5641,alta#5642,ciudad#5643] csv
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [plan#5641 ASC NULLS FIRST], true, 0
+   +- Exchange rangepartitioning(plan#5641 ASC NULLS FIRST, 200), ENSURE_REQUIREMENTS, [plan_id=1069]
+      +- HashAggregate(keys=[plan#5641], functions=[count(1)], output=[plan#5641, viajes#5652L])
+         +- Exchange hashpartitioning(plan#5641, 200), ENSURE_REQUIREMENTS, [plan_id=1066]
+            +- HashAggregate(keys=[plan#5641], functions=[partial_count(1)], output=[plan#5641, count#5671L])
+               +- Project [plan#5641]
+                  +- BroadcastHashJoin [rider_id#5611], [rider_id#5638], LeftOuter, BuildRight, false
+                     :- Project [rider_id#5611]
+                     :  +- FileScan parquet [rider_id#5611,fecha#5618] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://namenode:8020/nexo/silver/viajes], PartitionFilters: [isnotnull(fecha#5618), (fecha#5618 = 2026-05-26)], PushedFilters: [], ReadSchema: struct<rider_id:string>
+                     +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, false]),false), [plan_id=1061]
+                        +- Filter isnotnull(rider_id#5638)
+                           +- FileScan csv [rider_id#5638,plan#5641] Batched: false, DataFilters: [isnotnull(rider_id#5638)], Format: CSV, Location: InMemoryFileIndex(1 paths)[hdfs://namenode:8020/nexo/bronze/riders_sqoop], PartitionFilters: [], PushedFilters: [IsNotNull(rider_id)], ReadSchema: struct<rider_id:string,plan:string>
+
++----+------+
+|plan|viajes|
++----+------+
+|free|  3304|
+|plus|  3157|
+| pro|  4264|
++----+------+
+
+>> Días en gold_ops_diaria: 91
+>> G1 sum(viajes) = filas de Silver ? 979760 = 979760 -> True
+>> Días sin dato de clima: 0
++----------+------+--------+--------+------------+-----------------+
+|     fecha|viajes| minutos|      km|ingresos_ars|pct_clima_adverso|
++----------+------+--------+--------+------------+-----------------+
+|2026-02-28|  1314| 6842.57| 5283.93|    460171.2|              0.0|
+|2026-03-01| 10802|56091.07|43927.85|  3799186.43|              0.0|
+|2026-03-02| 10708|55975.25|43213.53|  3760663.04|              0.0|
+|2026-03-03| 11112|57723.25|45461.68|   3919615.6|            16.81|
+|2026-03-04| 10992|57058.12| 44716.1|  3866223.61|              0.0|
+|2026-03-05| 10854| 57326.5|44088.09|  3835701.53|            13.34|
+|2026-03-06| 11084|57628.87|45226.05|  3905968.81|            59.97|
+|2026-03-07| 10883|56707.45| 44592.0|  3845177.25|            53.63|
+|2026-03-08| 10968| 56561.3| 44415.8|  3841860.62|              0.0|
+|2026-03-09| 10925| 55896.2|44098.66|   3811765.5|              0.0|
++----------+------+--------+--------+------------+-----------------+
+only showing top 10 rows
+>> Top 10 estaciones de origen:
++----------+--------------------+------------+------+
+|station_id|              nombre|      barrio|viajes|
++----------+--------------------+------------+------+
+|     ST014|Estacion San Telm...|   San Telmo| 41214|
+|     ST018|Estacion Villa Cr...|Villa Crespo| 41145|
+|     ST002|Estacion San Telmo 2|   San Telmo| 41120|
+|     ST012| Estacion Palermo 12|     Palermo| 41044|
+|     ST005|  Estacion Almagro 5|     Almagro| 41007|
+|     ST021|  Estacion Retiro 21|      Retiro| 40968|
+|     ST011|Estacion Chacarit...|   Chacarita| 40943|
+|     ST023|Estacion Chacarit...|   Chacarita| 40898|
+|     ST015|Estacion Belgrano 15|    Belgrano| 40883|
+|     ST020|Estacion Colegial...|  Colegiales| 40880|
++----------+--------------------+------------+------+
+
+>> Viajes e ingresos por plan de rider:
++----+------+--------------+
+|plan|viajes|  ingresos_ars|
++----+------+--------------+
+| pro|392272|1.3824884714E8|
+|free|301574|1.0633034093E8|
+|plus|285914|1.0071820825E8|
++----+------+--------------+
+

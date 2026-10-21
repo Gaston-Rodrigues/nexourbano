@@ -20,4 +20,4 @@ print(viajes.count(), clean.count(), clean.filter("distancia_nula = 1").count())
 
 - **Qué dejaríamos en producción 2026: Spark.** Pig no tiene versiones nuevas desde 2017 (0.17.0) y tuvo que adaptarse a mano a Hadoop 3: el contenedor no traía `which`, y sin servidor de historial de trabajos cada conteo esperó unos 3 minutos (el script completo tardó 11 minutos). Spark lee el encabezado solo, infiere tipos, se puede probar y es el mismo motor que usamos para Silver y Gold.
 - **Cuándo sí tendría sentido Pig:** solo si ya existen scripts Pig heredados que funcionan y migrarlos cuesta más que mantenerlos.
-- **Límite:** el código Spark de este ADR está escrito pero **todavía no se ejecutó**. Se corre cuando levantemos Spark en M8 y se compara que dé 2000, 1959 y 79.
+- **Verificación (M8):** el código Spark se ejecutó con `05-spark/batch/verificar_pig_spark.py` sobre Spark 4.0.0 en modo local y dio `2000 1959 79`, los mismos números que Pig (`evidence/spark/verificar_pig_spark.log`). Escribe en `/nexo/silver/clean_viajes_spark`, sin pisar la carpeta de Pig.

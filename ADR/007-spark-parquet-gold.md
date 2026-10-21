@@ -1,0 +1,10 @@
+# ADR 007 — Spark en modo local, Parquet en Silver y Gold
+
+- **Contexto:** M8 pide cargar el millón de viajes, limpiar, unir con clima y riders, y publicar la capa Gold `gold_ops_diaria`. El job es `05-spark/batch/job_gold.py` (Spark 4.0.0, un solo contenedor, `local[*]` con 2 GB de memoria) y se ejecuta con `spark-submit`.
+- **Parquet en lugar de Delta:** Silver (`/nexo/silver/viajes`, partido por `fecha`) y Gold (`/nexo/gold/gold_ops_diaria`) se guardan en Parquet, como piden nuestros contratos. Delta agregaría transacciones y viaje en el tiempo, pero necesita librerías extra y aquí cada corrida reescribe todo (`overwrite`), así que no lo necesitamos. Límite: el `overwrite` de Parquet no es atómico; si el job se corta a mitad, la carpeta puede quedar a medias.
+- **Mismas reglas que M3:** se copiaron R1 a R5 de `03-databricks/01_ingesta.py`. Resultado: 979.760 viajes válidos y 20.240 en cuarentena (20.184 por R1 y 56 por R2), igual que en Databricks, y Silver + cuarentena = Bronze.
+- **El clima se bajó de nuevo:** el de M3 vive en una tabla de Databricks y Spark en este contenedor no la puede leer. `05-spark/batch/descargar_clima.py` repite la misma descarga de Open-Meteo (3 estaciones con más viajes, 2026-03-01 a 2026-05-30): 6.552 filas, sin rechazos. Solo 123.479 viajes (12,6 %) tienen clima.
+- **`pct_clima_adverso`** se calcula solo sobre los viajes que tienen clima (clima adverso = `weather_code >= 51`, igual que en M3). `ingresos_ars` es la suma de `fare_ars`, sin tarifa plana.
+- **Día en hora local:** `fecha` es la fecha de Buenos Aires (UTC-3), por eso el primer día (2026-02-28) es parcial: solo trae las últimas 3 horas de ese día.
+- **Riders de M7:** el join usa lo que dejó Sqoop en HDFS (`/nexo/bronze/riders_sqoop`, 120 filas). Los viajes por plan suman 979.760: todos los `rider_id` existen en la tabla.
+- **Límites:** un solo contenedor sin cluster (para producción: YARN o Kubernetes), y las 447.298 alertas de velocidad (R6) se conservan sin rechazar, como en M3.
