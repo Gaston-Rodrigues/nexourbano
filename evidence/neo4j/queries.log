@@ -1,0 +1,16 @@
+amigo_en_comun, nombre
+"R0002", "Rider_0002"
+camino, saltos
+["R0000", "R0060", "R0096", "R0116", "R0100"], 4
+recomendado, estaciones_en_comun, cantidad
+"R0027", ["ST023", "ST020", "ST009"], 3
+"R0051", ["ST023", "ST009", "ST005"], 3
+"R0011", ["ST018", "ST009"], 2
+"R0020", ["ST023", "ST009"], 2
+"R0038", ["ST023", "ST005"], 2
+estacion, rider_1, rider_2, rider_3, viajes_juntos
+"ST005", "R0081", "R0077", "R0085", 12
+"ST017", "R0010", "R0114", "R0055", 12
+"ST017", "R0014", "R0080", "R0018", 12
+"ST013", "R0001", "R0010", "R0088", 10
+"ST014", "R0055", "R0116", "R0106", 10

@@ -1,0 +1,9 @@
+nodo, cantidad
+"Estacion", 24
+"Interes", 10
+"Rider", 120
+relacion, cantidad
+"AMIGO_DE", 220
+"LE_GUSTA", 225
+"SALE_DE", 303
+"VIAJO_CON", 160

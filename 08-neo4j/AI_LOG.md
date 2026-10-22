@@ -1,4 +1,4 @@
 # AI_LOG · 08-neo4j
 
 | Fecha | Prompt (resumen) | Qué se aceptó | Qué se corrigió a mano | Qué falló |
-|---|---|---|---|---|
+| 2026-10-22 | Construimos juntos, con Claude como guía: grafo en Neo4j con nodos Rider, Interes y Estacion, relaciones AMIGO_DE, VIAJO_CON, LE_GUSTA y SALE_DE, carga de 120 riders y 4 consultas Cypher (amigos en común, camino más corto, recomendación y patrón de fraude) | grafo.cypher, queries.cypher, generar_grafo_cypher.py, correr_cypher.sh y el montaje de 08-neo4j en docker-compose.yml | La relación SALE_DE se derivó de los viajes; el grafo del PNG se redujo a 1 salto desde R0100 porque el completo era ilegible; la consulta de fraude quedó aproximada | `python` en Windows era el alias de la Store y falló; se resolvió usando `py`. La consulta de fraude no puede verificar "menos de 2 minutos" porque VIAJO_CON no guarda hora |
