@@ -58,7 +58,7 @@ services:
     container_name: nexo-cassandra
     environment: {MAX_HEAP_SIZE: 1G, HEAP_NEWSIZE: 256M}
     ports: ["9042:9042"]
-    volumes: [cassandra_data:/var/lib/cassandra, "./data:/data:ro"]
+    volumes: [cassandra_data:/var/lib/cassandra, "./data:/data:ro", "./07-cassandra:/work/07-cassandra:ro"]
     healthcheck:
       test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' >/dev/null 2>&1"]
       interval: 20s

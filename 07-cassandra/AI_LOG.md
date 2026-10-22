@@ -1,4 +1,4 @@
 # AI_LOG · 07-cassandra
 
 | Fecha | Prompt (resumen) | Qué se aceptó | Qué se corrigió a mano | Qué falló |
-|---|---|---|---|---|
+| 2026-10-22 | Construimos juntos, con Claude como guía: keyspace nexo con RF=1, tabla lecturas_vehiculo modelada por consulta, carga de 6.000 lecturas con COPY, consultas CQL (incluido el error a propósito) y ADR 009 de consistencia | schema.cql, cargar_lecturas.cql, queries.cql, ADR 009 y el montaje de 07-cassandra en docker-compose.yml | Nombres de archivos y las consultas elegidas (vehículo V0030 y rango de 4 horas) | Cassandra respondió Connection refused hasta que terminó de arrancar; después todo funcionó | 

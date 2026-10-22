@@ -1,0 +1,15 @@
+Using 11 child processes
+
+Starting copy of nexo.lecturas_vehiculo with columns [vehicle_id, ts, lat, lon, battery_pct, temp_c, status].
+Processed: 1000 rows; Rate:    3618 rows/s; Avg. rate:    3617 rows/sProcessed: 6000 rows; Rate:   11018 rows/s; Avg. rate:   10950 rows/sProcessed: 6000 rows; Rate:    5509 rows/s; Avg. rate:    9231 rows/s
+6000 rows imported from 1 files in 0.650 seconds (0 skipped).
+
+ count
+-------
+  6000
+
+(1 rows)
+
+Warnings :
+Aggregation query used without partition key
+
