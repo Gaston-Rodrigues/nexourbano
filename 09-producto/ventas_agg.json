@@ -1,0 +1,84 @@
+{
+  "periodo": {
+    "descripcion": "segundo trimestre de 2026 (hora de Buenos Aires); junio llega hasta el 14/6",
+    "desde": "2026-04-01T03:00:00.000Z",
+    "hasta": "2026-07-01T03:00:00.000Z"
+  },
+  "ventas_en_periodo": 2062,
+  "total_por_categoria": [
+    {
+      "ventas": 522,
+      "total_ars": 4082280,
+      "categoria": "recarga"
+    },
+    {
+      "ventas": 512,
+      "total_ars": 3641280,
+      "categoria": "accesorio"
+    },
+    {
+      "ventas": 545,
+      "total_ars": 3368750,
+      "categoria": "seguro"
+    },
+    {
+      "ventas": 483,
+      "total_ars": 3018970,
+      "categoria": "pase"
+    }
+  ],
+  "top5_productos": [
+    {
+      "ventas": 67,
+      "total_ars": 858730,
+      "sku": "SKU004",
+      "nombre": "Pase 4",
+      "categoria": "pase"
+    },
+    {
+      "ventas": 65,
+      "total_ars": 802750,
+      "sku": "SKU020",
+      "nombre": "Recarga 10",
+      "categoria": "recarga"
+    },
+    {
+      "ventas": 51,
+      "total_ars": 634490,
+      "sku": "SKU027",
+      "nombre": "Accesorio 7",
+      "categoria": "accesorio"
+    },
+    {
+      "ventas": 52,
+      "total_ars": 613080,
+      "sku": "SKU011",
+      "nombre": "Recarga 1",
+      "categoria": "recarga"
+    },
+    {
+      "ventas": 49,
+      "total_ars": 583710,
+      "sku": "SKU031",
+      "nombre": "Seguro 1",
+      "categoria": "seguro"
+    }
+  ],
+  "ventas_por_mes": [
+    {
+      "ventas": 854,
+      "total_ars": 5816960,
+      "mes": "2026-04"
+    },
+    {
+      "ventas": 847,
+      "total_ars": 5857430,
+      "mes": "2026-05"
+    },
+    {
+      "ventas": 361,
+      "total_ars": 2436890,
+      "mes": "2026-06"
+    }
+  ]
+}
