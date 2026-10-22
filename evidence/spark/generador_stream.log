@@ -1,0 +1,5 @@
+>> Archivo 40 : evento tardío ACEPTADO (40 s de atraso): {"ts": "2026-10-22T00:34:30+00:00", "event": "payment_fail", "vehicle_id": "V9001", "rider_id": "R0011", "battery_pct": 79.2}
+>> Archivo 80 : evento tardío ACEPTADO (40 s de atraso): {"ts": "2026-10-22T00:35:51+00:00", "event": "payment_fail", "vehicle_id": "V9001", "rider_id": "R0012", "battery_pct": 4.0}
+>> Archivo 120 : evento tardío ACEPTADO (40 s de atraso): {"ts": "2026-10-22T00:37:11+00:00", "event": "payment_fail", "vehicle_id": "V9001", "rider_id": "R0038", "battery_pct": 76.0}
+>> Archivo 150 : evento tardío DESCARTADO (240 s de atraso): {"ts": "2026-10-22T00:34:51+00:00", "event": "payment_fail", "vehicle_id": "V9002", "rider_id": "R0015", "battery_pct": 47.6}
+>> Generador terminado: 170 archivos

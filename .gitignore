@@ -12,3 +12,4 @@ data/_cuarentena/
 lakehouse/
 # Sólo se versionan muestras chicas
 !data/viajes_muestra.csv
+data/stream/eventos_*.json
