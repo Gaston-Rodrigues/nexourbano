@@ -1,0 +1,57 @@
+>> CREATE: insertMany -> documentos en la colección: 40
+>> READ: pases activos con el tag 'pro' (sku, nombre y precio en Buenos Aires)
+[
+  {
+    sku: 'SKU001',
+    nombre: 'Pase 1',
+    precios: {
+      'Buenos Aires': 3490
+    }
+  },
+  {
+    sku: 'SKU003',
+    nombre: 'Pase 3',
+    precios: {
+      'Buenos Aires': 5990
+    }
+  },
+  {
+    sku: 'SKU004',
+    nombre: 'Pase 4',
+    precios: {
+      'Buenos Aires': 14990
+    }
+  },
+  {
+    sku: 'SKU006',
+    nombre: 'Pase 6',
+    precios: {
+      'Buenos Aires': 9990
+    }
+  },
+  {
+    sku: 'SKU010',
+    nombre: 'Pase 10',
+    precios: {
+      'Buenos Aires': 5990
+    }
+  }
+]
+>> UPDATE: SKU001 documentos modificados = 1
+   precios antes:  {"Buenos Aires":3490,"Cordoba":5790}
+   precios después: {"Buenos Aires":3990,"Cordoba":5790}
+>> DELETE: se borró SKU007 (descontinuado), documentos borrados = 1
+   documentos que quedan: 39
+>> ANTES del índice (sin índice en tags)
+   etapas: COLLSCAN
+   documentos devueltos (nReturned): 15
+   claves de índice revisadas (totalKeysExamined): 0
+   documentos revisados (totalDocsExamined): 39
+   tiempo (executionTimeMillis): 0 ms
+>> Índice creado: { tags: 1 }
+>> DESPUÉS del índice (índice en tags)
+   etapas: FETCH > IXSCAN
+   documentos devueltos (nReturned): 15
+   claves de índice revisadas (totalKeysExamined): 15
+   documentos revisados (totalDocsExamined): 15
+   tiempo (executionTimeMillis): 2 ms

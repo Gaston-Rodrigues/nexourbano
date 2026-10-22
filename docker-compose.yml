@@ -44,7 +44,7 @@ services:
     image: mongo:8
     container_name: nexo-mongo
     ports: ["27018:27017"]        # 27018 en tu máquina → 27017 dentro del contenedor
-    volumes: [mongo_data:/data/db]
+    volumes: [mongo_data:/data/db, "./data:/datos:ro", "./06-mongodb:/work/06-mongodb:ro"]
     healthcheck:
       test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ping:1}).ok' | grep -q 1"]
       interval: 10s
