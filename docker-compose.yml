@@ -1,7 +1,8 @@
-# NexoUrbano · entorno local.  Un solo comando levanta los 5 motores de base de datos:
-#     docker compose up -d
-# Antes: crear el archivo .env (copiando .env.example) y generar los datos (ver GUIA_PASO_A_PASO.md).
-# Hadoop / Hive / HBase / Spark están más abajo con "profiles": NO se levantan todavía, van en la fase 2.
+# NexoUrbano · entorno local.
+#   Motores base (MinIO, MySQL, MongoDB, Cassandra, Neo4j):  docker compose up -d
+#   Hadoop, Hive y HBase:  --profile hadoop   ·   Spark:  --profile spark
+# Antes: copiar .env.example a .env y generar los datos (ver README.md).
+
 name: nexourbano
 
 x-hadoop: &hadoop
@@ -78,21 +79,33 @@ services:
     restart: unless-stopped
 
   # ───────────── HADOOP ─────────────
+  # Da permisos al usuario hadoop sobre los volúmenes de HDFS
+  # (en un volumen nuevo la carpeta es de root y el NameNode no puede escribir)
+  hdfs_permisos:
+    image: apache/hadoop:3
+    container_name: nexo-hdfs-permisos
+    user: root
+    entrypoint: ["chown", "-R", "1000:100", "/nn", "/dn1", "/dn2"]
+    volumes: [namenode_data:/nn, datanode1_data:/dn1, datanode2_data:/dn2]
+    profiles: [hadoop]
+    restart: "no"
+
   namenode:
     <<: *hadoop
     container_name: nexo-namenode
     hostname: namenode
-    command: ["hdfs", "namenode"]
+    depends_on: {hdfs_permisos: {condition: service_completed_successfully}}
+    command: ["bash", "-c", "[ -d /tmp/hadoop-hadoop/dfs/name/current ] || hdfs namenode -format -nonInteractive; exec hdfs namenode"]
     environment: {ENSURE_NAMENODE_DIR: /tmp/hadoop-hadoop/dfs/name}
     ports: ["9870:9870", "8020:8020"]
-    volumes: [namenode_data:/tmp/hadoop-hadoop/dfs/name, "./data:/datos:ro", "./04-hadoop:/work/04-hadoop:ro"] 
+    volumes: [namenode_data:/tmp/hadoop-hadoop/dfs/name, "./data:/datos:ro", "./04-hadoop:/work/04-hadoop:ro"]
     healthcheck:
       test: ["CMD-SHELL", "hdfs dfsadmin -safemode get | grep -q OFF"]
       interval: 15s
       timeout: 10s
       retries: 20
       start_period: 30s
-
+  
   datanode1:
     <<: *hadoop
     container_name: nexo-datanode1
