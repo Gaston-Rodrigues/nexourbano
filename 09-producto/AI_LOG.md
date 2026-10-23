@@ -1,4 +1,4 @@
 # AI_LOG · 09-producto
 
 | Fecha | Prompt (resumen) | Qué se aceptó | Qué se corrigió a mano | Qué falló |
-|---|---|---|---|---|
+| 2026-10-23 | Construimos juntos, con Claude como guía: producto Gold con decision_ops.py, que consulta Spark, Cassandra, MongoDB, Neo4j y el WordCount de HDFS para responder 5 preguntas de negocio, indicando en cada una qué dato faltó | decision_ops.py, p1_reponer.py, p5_facturacion.py, decision_ops.md y la evidencia real en evidence/producto/decision_ops.log | El umbral de SOH (70) y el rider objetivo (R0100) son supuestos nuestros porque el TP no los define; la recomendación de pase se hizo por afinidad entre riders porque los intereses del grafo y los tags de los pases no tienen mapeo | Ningún error de ejecución. Datos faltantes declarados: stock y pronóstico (P1), lecturas de Cassandra solo del 1/5 (P2), sin hora en VIAJO_CON (P4), tickets sin fecha ni monto (P5) |

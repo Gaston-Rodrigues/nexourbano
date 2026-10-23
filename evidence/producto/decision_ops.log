@@ -1,0 +1,45 @@
+=== P1. ¿Dónde reponer scooters en las próximas 3 h si llueve? ===
+>> P1 franja local: [19, 20, 21] | días con lluvia en esa franja: 15
+>> P1 ST014 Estacion San Telmo 14 San Telmo salidas: 613 por día con lluvia: 40.87
+>> P1 ST018 Estacion Villa Crespo 18 Villa Crespo salidas: 601 por día con lluvia: 40.07
+>> P1 ST002 Estacion San Telmo 2 San Telmo salidas: 556 por día con lluvia: 37.07
+>> P1 LIMITE: no hay stock actual por estación ni pronóstico; se usa el histórico
+=== P2. ¿Qué vehículo hay que retirar hoy? (SOH < 70.0) ===
+>> P2 candidatos con SOH bajo el umbral: 16
+>> P2 V0033 SOH: 62.2 | última lectura: 2026-05-01 19:08:00.000Z | batería: 76.9 | estado: ok
+>> P2 V0060 SOH: 62.3 | última lectura: 2026-05-01 19:46:16.000Z | batería: 44.1 | estado: ok
+>> P2 V0043 SOH: 62.9 | última lectura: 2026-05-01 19:19:07.000Z | batería: 55.5 | estado: idle
+>> P2 V0016 SOH: 64.1 | última lectura: 2026-05-01 19:51:13.000Z | batería: 57.6 | estado: idle
+>> P2 V0052 SOH: 65.7 | última lectura: 2026-05-01 19:57:42.000Z | batería: 54.3 | estado: ok
+>> P2 V0037 SOH: 66.7 | última lectura: 2026-05-01 19:41:06.000Z | batería: 52.6 | estado: ok
+>> P2 V0031 SOH: 66.8 | última lectura: 2026-05-01 19:27:12.000Z | batería: 92.6 | estado: ok
+>> P2 V0002 SOH: 67.1 | última lectura: 2026-05-01 19:32:37.000Z | batería: 71.3 | estado: ok
+>> P2 V0068 SOH: 67.5 | última lectura: 2026-05-01 19:49:04.000Z | batería: 60.8 | estado: ok
+>> P2 V0054 SOH: 67.7 | última lectura: 2026-05-01 19:49:15.000Z | batería: 99.8 | estado: ok
+>> P2 V0008 SOH: 68.7 | última lectura: 2026-05-01 19:31:25.000Z | batería: 52.1 | estado: idle
+>> P2 V0038 SOH: 69.0 | última lectura: 2026-05-01 19:25:41.000Z | batería: 100.0 | estado: ok
+>> P2 V0010 SOH: 69.1 | última lectura: 2026-05-01 19:45:44.000Z | batería: 45.9 | estado: ok
+>> P2 V0018 SOH: 69.4 | última lectura: 2026-05-01 19:55:29.000Z | batería: 43.3 | estado: ok
+>> P2 V0015 SOH: 69.8 | última lectura: 2026-05-01 19:53:03.000Z | batería: 44.4 | estado: ok
+>> P2 V0075 SOH: 69.9 | última lectura: 2026-05-01 19:59:13.000Z | batería: 50.1 | estado: idle
+=== P3. ¿Qué pase venderle al rider R0100? ===
+>> P3 riders que comparten intereses con R0100 : 40
+>> P3 pase más comprado por esos riders: SKU003 Pase 3 ['lluvia', 'pro'] compras: 41
+>> P3 pase más vendido en general: SKU004 Pase 4 ['urbano', 'pro'] compras: 117
+>> P3 LIMITE: los intereses del grafo y los tags de los pases no tienen mapeo en los datos
+=== P4. ¿Hay colusión / fraude social? ===
+>> P4 filas devueltas (incluye encabezado): 6
+>> P4 estacion, rider_1, rider_2, rider_3, viajes_juntos
+>> P4 "ST005", "R0081", "R0077", "R0085", 12
+>> P4 "ST017", "R0010", "R0114", "R0055", 12
+>> P4 "ST017", "R0014", "R0080", "R0018", 12
+>> P4 "ST013", "R0001", "R0010", "R0088", 10
+>> P4 "ST014", "R0055", "R0116", "R0106", 10
+>> P4 LIMITE: VIAJO_CON no guarda hora; no se puede verificar '<2 min'. Es un indicio de colusión, no una prueba
+=== P5. ¿Cuánto se facturó vs. tickets de soporte 'cobro'? ===
+>> P5 viajes: 979760 | ingresos_ars: 345297396.32 | desde: 2026-02-28 | hasta: 2026-05-29
+>> P5 tickets #cobro (WordCount en HDFS): 294
+>> P5 riders distintos con ticket de cobro: 107
+>> P5 facturado por ventas (Mongo), todas las categorías: 27456400
+>> P5 pases vendidos: 901 | riders con ticket que SÍ compraron pase: 107 de 107
+>> P5 LIMITE: los tickets no traen fecha ni monto; no se puede decir cuánto dinero se cobró doble ni en qué período
