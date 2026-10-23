@@ -116,7 +116,23 @@ docker exec -u root nexo-namenode bash /work/04-hadoop/sqoop/instalar_sqoop.sh
 $pass = (Select-String -Path .env -Pattern '^MYSQL_ROOT_PASSWORD=').Line.Split('=',2)[1]
 docker exec -e SQOOP_DB_PASS=$pass nexo-namenode bash /work/04-hadoop/sqoop/importar_riders.sh
 ```
-8. **Spark batch, streaming, Mongo, Cassandra, Neo4j y producto:** secciones siguientes (el batch necesita el paso 7).
+8. **Pig (M7):** instalar dentro del NameNode y correr el script (tarda unos 11 minutos; el resultado esperado es `distancia_nula,79`):
+```powershell
+docker exec -u root nexo-namenode bash /work/04-hadoop/pig/instalar_pig.sh
+docker exec nexo-namenode /opt/pig/bin/pig -f /work/04-hadoop/pig/clean_viajes.pig
+```
+9. **Flume (M7):** instalar y arrancar el agente (queda corriendo en primer plano):
+```powershell
+docker exec -u root nexo-namenode bash /work/04-hadoop/flume/instalar_flume.sh
+docker exec nexo-namenode bash /work/04-hadoop/flume/iniciar_agente.sh
+```
+En **otra terminal**: simular eventos, esperar unos 30 segundos, verificar que llegó el archivo a HDFS y detener el agente:
+```powershell
+docker exec nexo-namenode bash /work/04-hadoop/flume/simular_eventos.sh
+docker exec nexo-namenode hdfs dfs -ls -R /nexo/bronze/logs
+docker exec nexo-namenode bash /work/04-hadoop/flume/detener_agente.sh
+```
+10. **Spark batch, streaming, Mongo, Cassandra, Neo4j y producto:** secciones siguientes (el batch necesita el paso 7).
 
 ## Spark batch (M8): Bronze → Silver → Gold
 
@@ -168,7 +184,7 @@ Con todos los motores arriba:
 ```powershell
 py -X utf8 09-producto\decision_ops.py
 ```
-Responde 5 preguntas de negocio consultando Spark, Cassandra, MongoDB, Neo4j y HDFS, e indica en cada una qué dato faltó. Resumen: `09-producto/decision_ops.md`. Salida real: `evidence/producto/decision_ops.log`. 
+Responde 5 preguntas de negocio consultando Spark, Cassandra, MongoDB, Neo4j y HDFS, e indica en cada una qué dato faltó. Resumen: `09-producto/decision_ops.md`. Salida real: `evidence/producto/decision_ops.log`.
 
 ## Recorte de la demo (8 minutos)
 
