@@ -10,6 +10,7 @@ export HADOOP_MAPRED_HOME=/opt/hadoop
   --username root \
   --password "$SQOOP_DB_PASS" \
   --table riders \
+  --columns "rider_id,nombre,email,plan,alta,ciudad" \
   --target-dir /nexo/bronze/riders_sqoop \
   --delete-target-dir \
   -m 1
