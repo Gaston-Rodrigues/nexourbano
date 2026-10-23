@@ -1,0 +1,9 @@
+# Finales de línea LF al clonar (los scripts corren dentro de contenedores Linux)
+* text=auto eol=lf
+
+# Binarios: no se tocan
+*.png binary
+*.webp binary
+*.zip binary
+*.mp4 binary
+*.pdf binary 
