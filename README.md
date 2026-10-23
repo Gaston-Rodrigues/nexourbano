@@ -92,10 +92,35 @@ Data lake local con MinIO (compatible con S3). Los viajes crudos están en:
 - **Los 2 DataNodes corren en la misma PC**: la caída de un nodo es simulada. HBase corre en un solo servidor (standalone) y el metastore de Hive es Derby embebido. En producción serían servidores distintos.
 - **Valores atípicos conocidos:** 10 viajes de la muestra duran exactamente 20.000 s (ver `evidence/m1_perfilado_viajes.txt`).
 - **Memoria:** hasta M6 Docker Desktop corrió con el valor por defecto (unos 7,7 GB).
+## Orden de ejecución (probado desde un clon limpio)
+
+1. **Datos y `.env`:** `py tools\generar_datos.py --seed 131 --n-viajes 1000000` y copiar `.env.example` a `.env`.
+2. **Motores base:** `docker compose up -d` (MinIO, MySQL, MongoDB, Cassandra, Neo4j).
+3. **Hadoop y Spark:** `docker compose --profile hadoop --profile spark up -d`. En un volumen nuevo, el servicio `hdfs_permisos` da permisos y el NameNode se formatea solo; esperar unos 2 minutos a que quede `healthy`.
+4. **HDFS y WordCount (M5):**
+```powershell
+docker exec nexo-namenode hdfs dfs -mkdir -p /nexo/bronze/viajes /nexo/bronze/logs /nexo/hive/bronze_viajes
+docker exec nexo-namenode hdfs dfs -put -f /datos/viajes_muestra.csv /nexo/bronze/viajes/
+docker exec nexo-namenode hdfs dfs -put -f /datos/viajes_muestra.csv /nexo/hive/bronze_viajes/
+docker exec nexo-namenode hdfs dfs -put -f /datos/texto_ops.txt /nexo/bronze/logs/
+docker exec nexo-namenode yarn jar /opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar wordcount /nexo/bronze/logs/texto_ops.txt /nexo/gold/wordcount
+```
+5. **HBase (M6):** `docker exec nexo-hbase hbase shell /work/04-hadoop/hbase/cargar_vehiculos.txt` y después `.../consultas_hbase.txt`.
+6. **Hive (M6):** el script de abajo va **después** del paso 4: si se corre antes de subir el CSV, Hive guarda en caché un resultado vacío.
+```powershell
+docker exec nexo-hive beeline -u jdbc:hive2://localhost:10000 -f /work/04-hadoop/hive/hive_nexo.sql
+```
+7. **Sqoop (M7):** instalar dentro del NameNode y luego importar (la contraseña se toma del `.env`):
+```powershell
+docker exec -u root nexo-namenode bash /work/04-hadoop/sqoop/instalar_sqoop.sh
+$pass = (Select-String -Path .env -Pattern '^MYSQL_ROOT_PASSWORD=').Line.Split('=',2)[1]
+docker exec -e SQOOP_DB_PASS=$pass nexo-namenode bash /work/04-hadoop/sqoop/importar_riders.sh
+```
+8. **Spark batch, streaming, Mongo, Cassandra, Neo4j y producto:** secciones siguientes (el batch necesita el paso 7).
 
 ## Spark batch (M8): Bronze → Silver → Gold
 
-Requiere `--profile hadoop` y `--profile spark` arriba y el CSV de viajes en HDFS (`/nexo/bronze/viajes`).
+Lee los viajes y el clima de la carpeta `data/` y necesita que Sqoop haya dejado los riders en `/nexo/bronze/riders_sqoop` (ver "Orden de ejecución"). Si Docker tiene menos de 10 GB, detener antes los motores que no usa (`docker stop nexo-cassandra nexo-hive nexo-hbase nexo-mongo nexo-neo4j nexo-minio nexo-mysql`): si el job se corta sin mostrar ningún error, es falta de memoria.
 ```powershell
 docker exec -e HADOOP_USER_NAME=hadoop nexo-spark /opt/spark/bin/spark-submit --master local[*] --driver-memory 2g /opt/nexo/05-spark/batch/job_gold.py
 ```
