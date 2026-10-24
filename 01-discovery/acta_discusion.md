@@ -12,9 +12,8 @@
 7. En flota el riesgo es mayor: batería o temperatura falsas ocultan una celda defectuosa (seguridad).
 8. Control 1: contrato Bronze con reglas R1–R6, verificadas por `tools/validar_contratos.py`.
 9. Control 2: en Spark, cada regla cuenta sus rechazados y la suma Silver + cuarentena debe igualar Bronze.
-10. Control 3: los rechazados no se borran: van a `bronze/_cuarentena/` con la regla violada.
+10. Control 3: los rechazados no se pierden. Bronze queda intacto y los viajes que fallan alguna regla se separan en una cuarentena (equivalente a una DLQ), que el job cuenta    por regla: 20.240 viajes, 20.184 por R1 y 56 por R2.
 11. Control 4: en streaming, rango de batería 0–100 % y watermark de 1 min.
 12. Control 5: la facturación de Gold se contrasta con los tickets de "cobro".
 13. Qué no resuelve: un GPS alterado dentro del rango válido; lo vamos a mirar con velocidad máxima plausible.
-14. Qué falta decidir: umbral de velocidad para el streaming (¿25, 40 o 60 km/h?).
-15. Responsable de mantener los contratos: Gastón Rodrigues.
+14. Responsable de mantener los contratos: Gastón Rodrigues.
